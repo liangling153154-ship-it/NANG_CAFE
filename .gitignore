@@ -1,0 +1,27 @@
+# Whitelist: only the Nâng Café website is published.
+# ACID8 clone material (acid8-coffee.html, index-original.html, media/hero-acid8*, media/ig/,
+# RECON/, etc.) and brand source files stay local.
+/*
+!/.gitignore
+!/README.md
+!/index.html
+
+!/assets/
+/assets/*
+!/assets/fonts/
+/assets/fonts/*
+!/assets/fonts/fonts.css
+!/assets/fonts/display.css
+!/assets/fonts/bvp/
+!/assets/fonts/bsd/
+
+!/media/
+/media/*
+!/media/nang/
+
+!/data/
+/data/*
+!/data/nang-feed.json
+
+node_modules/
+.DS_Store
