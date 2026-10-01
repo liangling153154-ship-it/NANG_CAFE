@@ -773,7 +773,21 @@ a.grating:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .stage-cap{margin-top:2.2rem;font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.6;text-align:center;max-width:32ch}
 #story .ig-item{flex-basis:calc((100% - 16px) / 3)}
 @media(max-width:700px){#story .ig-item{flex-basis:78%}}
-.story-en{margin:1.6rem auto 0;max-width:62ch;text-align:center;font-size:var(--fs-body);line-height:1.75;opacity:.72;font-style:italic}
+/* Gian III · founder's letter (teal room between the cream rooms) */
+.gallery.letter{padding-bottom:12vh}
+.letter-body{max-width:40rem;margin:0 auto;font-size:clamp(1.02rem,1.25vw,1.12rem);line-height:1.9;color:var(--cream)}
+.letter-body p{margin:0 0 1.5em;text-wrap:pretty}
+.letter-body .salute{font-style:italic;font-size:1.12em;margin-bottom:1.1em}
+.letter-body em{font-style:italic;color:var(--gold-lt)}
+.letter-photo{margin:3.2rem calc(50% - min(50vw - var(--gutter), 30rem)) 3.4rem}
+.letter-photo img{display:block;width:100%;height:auto;box-shadow:0 0 0 1px rgba(252,196,151,.35),0 30px 60px rgba(0,0,0,.35)}
+.letter-photo figcaption{margin-top:.9rem;text-align:center;font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;opacity:.6}
+.letter-close{margin:2.6rem 0 1.8rem!important;text-align:center;font-style:italic;font-size:clamp(1.7rem,3.4vw,2.4rem);line-height:1.2;color:var(--gold)}
+.letter-sign{display:flex;flex-direction:column;align-items:flex-end;gap:.15rem;padding-top:1.2rem;border-top:1px solid rgba(252,196,151,.28)}
+.letter-sign .sign-name{font-family:var(--display);font-weight:800;font-size:clamp(1.5rem,2.4vw,1.9rem);text-transform:uppercase;letter-spacing:.03em;line-height:1.1}
+.letter-sign .sign-role{font-size:var(--fs-label);letter-spacing:.16em;text-transform:uppercase;opacity:.68}
+.gallery.letter .story-foot{margin-top:4rem}
+@media(max-width:700px){.letter-photo{margin:2.4rem calc(var(--gutter) * -1) 2.6rem}.letter-sign{align-items:flex-start}}
 .foot-logo{display:block;height:58px;width:auto;margin-bottom:1.6rem}
 .wing .hours a{border-bottom:1px solid rgba(11,74,83,.35)}
 .wing .hours a:hover{border-color:var(--red)}
@@ -985,63 +999,37 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="floor"></div>
 </section>
 
-<section class="gallery cube" id="craft" data-od-id="section-story">
+<section class="gallery letter" id="craft" data-od-id="section-story">
   <div class="room-head">
     <div class="left rv">
       <div class="no">Gian III.</div>
       <h2>Lắng nghe<br><span class="serif-i">câu chuyện</span></h2>
     </div>
-    <div class="note rv d1">Cà phê · Con người<br>Bản sắc</div>
+    <div class="note rv d1">Lá thư từ người<br>sáng lập Nâng</div>
   </div>
 
-  <div class="craft-grid">
-    <div class="craft rv" data-od-id="value-coffee">
-      <div class="spot">
-        <div class="frame" data-depth="10">
-          <svg viewBox="20 60 200 200" preserveAspectRatio="xMidYMid meet"><rect width="240" height="300" fill="#F2ECDA"/><ellipse cx="120" cy="140" rx="44" ry="62" transform="rotate(24 120 140)" fill="none" stroke="#0B4A53" stroke-width="3"/><path d="M96 186 C110 162 126 118 148 96" fill="none" stroke="#0B4A53" stroke-width="3"/></svg>
-          <div class="mat"></div><div class="guide-no">01</div>
-        </div>
-      </div>
-      <div class="craft-label">
-        <div class="t">Cà phê</div>
-        <div class="rule" aria-hidden="true"></div>
-        <div class="b">Hạt luôn tươi mới, minh bạch nguồn gốc — và những dòng cà phê mới lạ để bạn khám phá.</div>
-      </div>
+  <article class="letter-body" data-od-id="founder-letter">
+    <p class="salute rv">Bạn thương mến,</p>
+    <p class="rv">Nhân một ngày đẹp trời, tôi muốn gửi đến bạn đôi dòng tâm sự nhỏ về những gì sắp diễn ra ở đây, tại quê hương Cao Bằng yêu dấu.</p>
+    <p class="rv">Như một cơ duyên, trong những chuyến hành trình dài, tôi đã bị mê hoặc bởi hương vị và vẻ đẹp của cà phê. Tôi bắt đầu làm cà phê ở khắp các vùng miền với niềm đam mê và yêu thích, nhưng vẫn trăn trở một điều: làm thế nào để mọi người ở quê hương tôi cũng được thưởng thức những hương vị tuyệt vời ấy? Rồi dịch bệnh ập đến, khiến tôi tự hỏi: liệu ta còn bao nhiêu thời gian để thực hiện những điều mình đang ấp ủ?</p>
+    <p class="rv">Từ đó, Nâng ra đời, với nguồn cảm hứng vô tận đến từ vùng đất thân thương này. <em>/nâng/</em> là cách đọc “số 1”, là “sự khởi đầu” trong tiếng dân tộc — ngôn ngữ phổ biến thứ hai sau tiếng phổ thông ở Cao Bằng. Những câu tiếng Tày, Nùng từ bé đã in sâu trong tâm trí tôi, để sau này lớn lên, dù đi bất cứ nơi đâu, vẫn luôn là âm thanh quen thuộc gợi nhớ về nguồn cội của mình.</p>
+
+    <figure class="letter-photo rv" data-od-id="letter-photo-bottles">
+      <img src="media/nang/nang-ca-phe-chai.jpg" alt="Ba chai cà phê sữa của Nâng Café trong chai thủy tinh, đặt trên tảng đá phủ rêu giữa cây xanh" width="1600" height="1066" loading="lazy" decoding="async">
+      <figcaption>Cà phê Nâng trong chai thủy tinh</figcaption>
+    </figure>
+
+    <p class="rv">Nâng mong muốn đem lại một khái niệm mới: rõ ràng, minh bạch — một trải nghiệm êm ái và tỉnh táo mà vẫn thân quen, gần gũi.</p>
+    <p class="rv">Nâng hi vọng sẽ là người bạn đồng hành cùng bạn trên chặng đường khám phá những điều êm đẹp, những trải nghiệm thú vị, thông qua cầu nối là cà phê — để cùng nhau, chúng ta bắt đầu…</p>
+
+    <p class="letter-close rv" data-od-id="letter-closing">một khởi đầu mới!</p>
+    <div class="letter-sign rv" data-od-id="letter-signature">
+      <span class="sign-name">Hoàng Duy Tùng</span>
+      <span class="sign-role">Người sáng lập Nâng</span>
     </div>
+  </article>
 
-    <div class="craft rv d1" data-od-id="value-people">
-      <div class="spot">
-        <div class="frame" data-depth="13">
-          <svg viewBox="20 60 200 200" preserveAspectRatio="xMidYMid meet"><rect width="240" height="300" fill="#F2ECDA"/><g fill="none" stroke="#0B4A53" stroke-width="3" stroke-linecap="round"><circle cx="95" cy="112" r="22"/><path d="M53 210 Q95 160 137 210"/><circle cx="152" cy="124" r="18"/><path d="M120 210 Q152 174 184 210" opacity=".7"/></g></svg>
-          <div class="mat"></div><div class="guide-no">02</div>
-        </div>
-      </div>
-      <div class="craft-label">
-        <div class="t">Con người</div>
-        <div class="rule" aria-hidden="true"></div>
-        <div class="b">Phục vụ chu đáo — tại quán, mang đi, hay giao tận nhà trong chai thủy tinh thân thiện với môi trường.</div>
-      </div>
-    </div>
-
-    <div class="craft rv d2" data-od-id="value-identity">
-      <div class="spot">
-        <div class="frame" data-depth="10">
-          <svg viewBox="20 60 200 200" preserveAspectRatio="xMidYMid meet"><rect width="240" height="300" fill="#F2ECDA"/><g fill="none" stroke="#0B4A53" stroke-width="3" stroke-linejoin="round"><path d="M60 150 L120 104 L180 150"/><path d="M74 140 V214 H166 V140"/><path d="M106 214 V172 a14 14 0 0 1 28 0 V214"/></g><path d="M52 154 L120 102 L188 154" fill="none" stroke="#FAAA6D" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>
-          <div class="mat"></div><div class="guide-no">03</div>
-        </div>
-      </div>
-      <div class="craft-label">
-        <div class="t">Bản sắc</div>
-        <div class="rule" aria-hidden="true"></div>
-        <div class="b">Góp phần quảng bá văn hóa Tày, Nùng qua từng vật liệu và đường nét của ngôi nhà.</div>
-      </div>
-    </div>
-  </div>
-
-  <p class="story-copy rv" data-od-id="story-vi">“Nâng” là cách đọc số 1 trong tiếng Tày và Nùng tại Cao Bằng. Nâng mang đến cho bạn những trải nghiệm mới mẻ thông qua hương vị cà phê chất lượng cùng sự phục vụ chu đáo, trong một không gian <em>mộc mạc, giản dị</em> được kiến tạo từ các vật liệu địa phương, với nhà vách đất, mái ngói truyền thống cùng với vườn cây và hồ cá nhỏ.</p>
-  <p class="story-en rv d1" lang="en" data-od-id="story-en">In the Tay and Nung languages of Cao Bang, “Nâng” means the number “1”. Nâng brings you novel experiences through the taste of quality coffee and attentive service, set within a rustic, simple space crafted from local materials — featuring an earthen wall house with traditional tiled roofs, a lush garden, and a small fish pond.</p>
-
-  <div class="story-foot rv d1"><a class="btn" href="https://baocaobang.vn/Nang-Cafe-Khoi-nghiep-tu-tinh-yeu-ban-sac-van-hoa-dan-toc-16579.html" target="_blank" rel="noopener" data-od-id="story-press-link">Đọc bài viết trên Báo Cao Bằng</a></div>
+  <div class="story-foot rv"><a class="btn" href="https://baocaobang.vn/Nang-Cafe-Khoi-nghiep-tu-tinh-yeu-ban-sac-van-hoa-dan-toc-16579.html" target="_blank" rel="noopener" data-od-id="story-press-link">Đọc bài viết trên Báo Cao Bằng</a></div>
 
   <div class="floor"></div>
 </section>
