@@ -28,7 +28,8 @@
 
 <script>try{if(sessionStorage.getItem('nangveil')){document.documentElement.classList.add('arrive')}}catch(e){}</script>
 
-<link rel="preload" as="image" href="media/nang/nang-cong-vuon.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="media/nang/cua-nang-poster.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="media/nang/nang-cong-vuon.jpg">
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="assets/fonts/display.css">
 
@@ -747,6 +748,55 @@ body.started .hero-copy>*,body.started .grating{opacity:1;transform:none}
 }
 
 /* ===== Nâng rebrand ===== */
+/* ===== Door gate (replaces the ticket) ===== */
+html.arrive .gate{display:none}
+.gate{position:fixed;inset:0;z-index:10000;overflow:hidden;background:#120d09;color:var(--cream);
+  transition:opacity .9s ease,visibility .9s}
+.gate.done{opacity:0;visibility:hidden;pointer-events:none}
+.gate.reveal{background:transparent}
+.gate.reveal .gate-blur{opacity:0}
+/* stage = the video frame; sized like object-fit:cover so the door hotspot can be placed in % */
+.gate-stage{--w:max(100vw, calc(100dvh * 720 / 1280));position:absolute;width:var(--w);aspect-ratio:720/1280;
+  left:calc(50vw - var(--w) / 2);top:calc(50dvh - var(--w) * 1280 / 720 / 2);transform-origin:54% 52%}
+.gate-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#120d09}
+.gate-blur{position:absolute;inset:-40px;background:url(media/nang/cua-nang-poster.jpg) center/cover;filter:blur(28px) brightness(.55);transition:opacity .6s}
+@media (min-aspect-ratio:3/4){ /* landscape (desktop for now): show the whole frame, blurred fill on the sides */
+  .gate-stage{--w:calc(100dvh * 720 / 1280)}
+}
+/* idle hint: warm light leaking through the seam + a soft pulse at the ring handles */
+/* warm glow on the two door leaves only (no spill onto the wall) */
+.gate-glow{position:absolute;left:35.7%;top:32.6%;width:34.3%;height:37.9%;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(70% 60% at 50% 52%,rgba(255,196,128,.42),rgba(255,170,96,.2) 55%,rgba(255,160,90,.08) 100%);
+  box-shadow:inset 0 0 26px rgba(255,200,140,.35);animation:gateGlow 3.2s ease-in-out infinite;transition:opacity .35s}
+@keyframes gateGlow{0%,100%{opacity:.8}50%{opacity:1}}
+.gate.opening .gate-glow{opacity:0;animation:none}
+.gate-seam{position:absolute;left:52.5%;top:33%;width:.5%;height:37%;transform:translateX(-50%);border-radius:2px;
+  background:linear-gradient(180deg,transparent,rgba(255,186,110,.85) 18%,rgba(255,206,140,.95) 50%,rgba(255,186,110,.85) 82%,transparent);
+  filter:blur(1.5px);mix-blend-mode:screen;animation:gateSeam 3.2s ease-in-out infinite}
+@keyframes gateSeam{0%,100%{opacity:.25}50%{opacity:.85}}
+.gate-ring{position:absolute;left:53.2%;top:53.5%;width:12%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  border:1.5px solid rgba(250,170,109,.85);animation:gateRing 2.6s ease-out infinite;pointer-events:none}
+@keyframes gateRing{0%{opacity:.9;transform:translate(-50%,-50%) scale(.45)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
+.gate-door{position:absolute;left:35%;top:32%;width:36%;height:39%;border:0;background:transparent;cursor:pointer;border-radius:4px}
+.gate-door:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+.gate-top{position:absolute;inset:0 0 auto;padding:max(18px, env(safe-area-inset-top)) 20px 60px;display:flex;flex-direction:column;align-items:center;gap:.5rem;
+  background:linear-gradient(180deg,rgba(18,13,9,.62),rgba(18,13,9,0));transition:opacity .5s}
+.gate-top img{height:42px;width:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
+.gate-top span{font-size:var(--fs-label);letter-spacing:.2em;text-transform:uppercase;font-weight:600;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.gate-hint{position:absolute;left:0;right:0;bottom:0;margin:0;padding:70px 20px max(30px, env(safe-area-inset-bottom));text-align:center;
+  font-size:var(--fs-sm);letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--cream);
+  background:linear-gradient(0deg,rgba(18,13,9,.7),rgba(18,13,9,0));text-shadow:0 1px 6px rgba(0,0,0,.6);pointer-events:none;transition:opacity .5s}
+.gate-skip{position:absolute;right:14px;top:max(14px, env(safe-area-inset-top));min-height:44px;padding:0 14px;border:1px solid rgba(247,242,231,.4);border-radius:999px;
+  background:rgba(18,13,9,.35);backdrop-filter:blur(6px);color:var(--cream);font:600 var(--fs-label)/1 var(--ui);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;transition:background .3s,opacity .5s}
+.gate-skip:hover{background:rgba(18,13,9,.6)}
+.gate-skip:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.gate.opening .gate-seam,.gate.opening .gate-ring,.gate.opening .gate-hint,.gate.opening .gate-top,.gate.opening .gate-skip{opacity:0;animation:none;pointer-events:none}
+.gate.opening .gate-door{cursor:default}
+/* final move: keep walking into the dark doorway while the homepage comes up behind */
+.gate.walk-in .gate-stage{transition:transform .7s cubic-bezier(.5,0,.8,.4);transform:scale(3.2)}
+.gate.walk-in{transition:opacity .55s ease .12s,visibility 0s linear .7s}
+@media (prefers-reduced-motion:reduce){.gate-seam,.gate-ring{animation:none}.gate.walk-in .gate-stage{transform:none}}
+
 .nav .brand-img{display:block;height:32px;width:auto;filter:drop-shadow(0 1px 4px rgba(0,0,0,.45))}
 .nav.scrolled .brand-img{filter:none}
 @media(max-width:600px){.nav .brand-img{height:27px}}
@@ -754,7 +804,7 @@ body.started .hero-copy>*,body.started .grating{opacity:1;transform:none}
 @media(max-aspect-ratio:11/10){.hero-art{object-position:68% 40%}}
 /* mobile hero video is busier than the photo: deepen the scrim behind the copy */
 @media(max-width:700px){body.hero-has-video .hero-scrim{background:linear-gradient(180deg,rgba(12,9,7,.28) 0%,rgba(12,9,7,0) 18%,rgba(12,9,7,0) 40%,rgba(12,9,7,.42) 62%,rgba(12,9,7,.62) 100%)}}
-.pre-head p,.room-head h2,.mcat-head h3,.story-copy,.story-en,.final h2,.final p,.hero-copy p,.foot-brandline{text-wrap:balance}
+.pre-head p,.room-head .note,.room-head h2,.mcat-head h3,.story-copy,.story-en,.final h2,.final p,.hero-copy p,.foot-brandline{text-wrap:balance}
 .mcat-head{flex-wrap:wrap;row-gap:.2rem}
 .ig-fallback{border-top:none;background:transparent;min-height:0}
 .ticker-track .cell::after{content:"1";font-family:var(--display);font-weight:800;font-size:1.35em;color:var(--gold-lt)}
@@ -769,10 +819,29 @@ a.grating:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 #spaceList .mi{cursor:pointer}
 #spaceList .mi .pr{font-family:var(--display);font-weight:800;letter-spacing:.04em}
 #spaceList .mi.on{background:rgba(11,74,83,.06);padding-left:1rem}
+/* Gian II · auto-slider: continuous loop, faded edges, pause on hover/focus */
+.ig-marquee{overflow:hidden;padding:6px 0;
+  -webkit-mask:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
+.ig-marquee .ig-rail{overflow:visible;scroll-snap-type:none;width:max-content;gap:14px;animation:igLoop var(--ig-dur,70s) linear infinite}
+.ig-marquee:hover .ig-rail,.ig-marquee:focus-within .ig-rail{animation-play-state:paused}
+#story .ig-marquee .ig-skel{flex:0 0 clamp(200px,21vw,320px);height:clamp(250px,26vw,380px);aspect-ratio:auto}
+#story .ig-marquee .ig-item{flex:0 0 auto;width:auto;height:clamp(250px,26vw,380px);aspect-ratio:auto;border-radius:3px;box-shadow:0 14px 30px rgba(4,30,35,.22)}
+#story .ig-marquee .ig-item img{width:auto;height:100%;object-fit:contain;transition:transform .5s cubic-bezier(.22,1,.36,1),filter .5s ease}
+.ig-marquee .ig-item:hover img,.ig-marquee .ig-item:focus-visible img{transform:scale(1.05);filter:brightness(1.08)}
+.ig-marquee .ig-item:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+@keyframes igLoop{to{transform:translateX(calc(-50% - 7px))}}
+@media(max-width:700px){#story .ig-marquee .ig-item,#story .ig-marquee .ig-skel{height:min(64vw,300px)}#story .ig-marquee .ig-skel{flex-basis:52vw}.ig-marquee .ig-rail{gap:10px}}
+@media(prefers-reduced-motion:reduce){
+  .ig-marquee{-webkit-mask:none;mask:none;overflow-x:auto}
+  .ig-marquee .ig-rail{animation:none}
+  .ig-marquee .ig-item[aria-hidden="true"]{display:none}
+}
+.wing-photo{margin:-1rem -1rem .4rem;overflow:hidden;border:1px solid rgba(250,170,109,.45)}
+.wing-photo img{width:100%;height:auto;display:block}
+@media(max-width:1000px){.wing-photo{margin:-.4rem -.2rem .4rem}}
 .menu-stage .art-layer img{width:100%;height:100%;object-fit:cover;display:block}
+.menu-stage .frame{transition:aspect-ratio .5s ease}
 .stage-cap{margin-top:2.2rem;font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.6;text-align:center;max-width:32ch}
-#story .ig-item{flex-basis:calc((100% - 16px) / 3)}
-@media(max-width:700px){#story .ig-item{flex-basis:78%}}
 /* Gian III · founder's letter (teal room between the cream rooms) */
 .gallery.letter{padding-bottom:12vh}
 .letter-body{max-width:40rem;margin:0 auto;font-size:clamp(1.02rem,1.25vw,1.12rem);line-height:1.9;color:var(--cream)}
@@ -803,35 +872,31 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="plate" id="veilPlate">Sảnh chính — Nâng</div>
 </div>
 
-<div class="preloader" id="preloader">
-  <div class="pre-head">
-    <div class="caps">Nâng Café trân trọng giới thiệu</div>
-    <p>Một khởi đầu mới ở Cao Bằng</p>
+<div class="gate" id="preloader" role="dialog" aria-modal="true" aria-label="Cửa vào Nâng Café" data-od-id="door-gate">
+  <div class="gate-blur" aria-hidden="true"></div>
+  <div class="gate-stage" id="gateStage">
+    <video class="gate-video" id="gateVideo" muted playsinline preload="auto" poster="media/nang/cua-nang-poster.jpg" aria-hidden="true" tabindex="-1">
+      <source src="media/nang/cua-nang-mo.mp4" type="video/mp4">
+    </video>
+    <span class="gate-glow" aria-hidden="true"></span>
+    <span class="gate-seam" aria-hidden="true"></span>
+    <span class="gate-ring" aria-hidden="true"></span>
+    <button class="gate-door" id="ticket" type="button" aria-label="Mở cửa, vào Nâng Café" data-od-id="gate-door"></button>
   </div>
-  <button class="ticket" id="ticket" aria-label="Vào nhà" data-od-id="preloader-ticket">
-    <div class="t-left">
-      <div class="caps">Vé vào nhà</div>
-      <div class="name">Nhà vách đất<br>— Cao Bằng</div>
-      <div class="meta">Cửa vào: 075 tổ 10 · P. Sông Hiến</div>
-    </div>
-    <div class="t-right">
-      <div class="adm">Admit</div>
-      <div class="no8">1</div>
-      <div class="adm">Nâng</div>
-    </div>
-  </button>
-  <div class="pre-count" id="count">Đang lên đèn — 0%</div>
-  <div class="pre-hint">
-    <svg class="cue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
-    <span>Chạm vào vé để mở cửa</span>
+  <div class="gate-top" aria-hidden="true">
+    <img src="media/nang/logo-nang-cafe-duo.png" alt="" width="675" height="332">
+    <span>Cao Bằng · từ 2022</span>
   </div>
+  <p class="gate-hint" id="gateHint">Chạm vào cửa để vào nhà</p>
+  <button class="gate-skip" id="gateSkip" type="button" data-od-id="gate-skip">Bỏ qua</button>
+  <div class="sr-only" id="count" aria-live="polite"></div>
 </div>
 
 <div class="lamp" id="lamp"></div>
 <div class="grain"></div>
 
 <header class="nav" data-od-id="site-nav">
-  <a class="cell brand" href="#" aria-label="Nâng Café — trang chủ"><img class="brand-img" src="media/nang/logo-nang-cafe.png" alt="Nâng Café" width="671" height="327"></a>
+  <a class="cell brand" href="#" aria-label="Nâng Café — trang chủ"><img class="brand-img" src="media/nang/logo-nang-cafe-duo.png" alt="Nâng Café" width="675" height="332"></a>
   <span class="cell lang" aria-label="Ngôn ngữ: Tiếng Việt">VI</span>
   <a class="cell" href="https://www.instagram.com/naang.cafe/" target="_blank" rel="noopener" aria-label="Instagram @naang.cafe">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
@@ -924,23 +989,23 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 
       <div class="mcat">
         <div class="mcat-head"><h3>Vật liệu bản địa</h3><span class="sub">Gom về từ khắp Cao Bằng</span></div>
-        <div class="mi single" data-art="2" data-od-id="material-earth-wall"><div class="n">Vách đất <span class="o">Nước Hai, Hòa An</span></div><div class="pr">01</div>
+        <div class="mi single" data-art="0" data-od-id="material-earth-wall"><div class="n">Vách đất <span class="o">Nước Hai, Hòa An</span></div><div class="pr">01</div>
           <div class="d">Đất sét trộn rơm, trình thành những bức vách dày theo lối nhà truyền thống.</div></div>
         <div class="mi single" data-art="1" data-od-id="material-roof-tile"><div class="n">Mái ngói <span class="o">Nà Bao, Nguyên Bình</span></div><div class="pr">02</div>
           <div class="d">Ngói truyền thống từ Nà Bao (Minh Tâm, Nguyên Bình) phủ trên mái nhà.</div></div>
-        <div class="mi single" data-art="0" data-od-id="material-timber"><div class="n">Khung gỗ <span class="o">Hạ Lang</span></div><div class="pr">03</div>
+        <div class="mi single" data-art="2" data-od-id="material-timber"><div class="n">Khung gỗ <span class="o">Hạ Lang</span></div><div class="pr">03</div>
           <div class="d">Những cây xà dài 10 m phải xẻ đôi, chở hai chuyến mới về đến nơi.</div></div>
-        <div class="mi single" data-art="2" data-od-id="material-stone"><div class="n">Cột &amp; đá lát <span class="o">Quảng Hòa</span></div><div class="pr">04</div>
+        <div class="mi single" data-art="3" data-od-id="material-stone"><div class="n">Cột &amp; đá lát <span class="o">Quảng Hòa</span></div><div class="pr">04</div>
           <div class="d">Cột đá và những phiến đá lát lối đi, bậc thềm.</div></div>
-        <div class="mi single" data-art="1" data-od-id="material-bamboo"><div class="n">Vách tre đan <span class="o">Hồng Việt, Hòa An</span></div><div class="pr">05</div>
+        <div class="mi single" data-art="4" data-od-id="material-bamboo"><div class="n">Vách tre đan <span class="o">Hồng Việt, Hòa An</span></div><div class="pr">05</div>
           <div class="d">Vách tre đan thủ công bởi người thợ Hồng Việt.</div></div>
       </div>
 
       <div class="mcat signature">
         <div class="mcat-head"><h3>Ba khoảng không</h3><span class="sub">95 m² · dựng trong chưa đầy hai tháng</span></div>
-        <div class="mi single" data-art="2" data-od-id="zone-earthen-house"><div class="n">Nhà vách đất</div><div class="pr">I</div></div>
-        <div class="mi single" data-art="0" data-od-id="zone-garden"><div class="n">Sân ngoài trời <span class="o">vườn cây &amp; hồ cá nhỏ</span></div><div class="pr">II</div></div>
-        <div class="mi single" data-art="1" data-od-id="zone-timber-floors"><div class="n">Hai tầng gỗ</div><div class="pr">III</div></div>
+        <div class="mi single" data-art="5" data-od-id="zone-earthen-house"><div class="n">Nhà vách đất</div><div class="pr">I</div></div>
+        <div class="mi single" data-art="6" data-od-id="zone-garden"><div class="n">Sân ngoài trời <span class="o">vườn cây &amp; hồ cá nhỏ</span></div><div class="pr">II</div></div>
+        <div class="mi single" data-art="7" data-od-id="zone-timber-floors"><div class="n">Hai tầng gỗ</div><div class="pr">III</div></div>
       </div>
 
       <div class="menu-note">Khởi công tháng 11/2021 · đón khách từ tháng 1/2022<br>Theo Báo Cao Bằng</div>
@@ -949,9 +1014,14 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <div class="menu-stage rv d1">
       <div class="spot">
         <div class="frame" id="stageFrame">
-          <div class="art-layer"><img src="media/nang/nang-cong-vuon.jpg" alt="Cổng gỗ và vườn cây trước Nâng Café khi lên đèn" width="2048" height="1366" loading="lazy" decoding="async"></div>
-          <div class="art-layer"><img src="media/nang/nang-nha-dat-dem.jpg" alt="Ngôi nhà vách đất mái ngói của Nâng Café về đêm" width="960" height="640" loading="lazy" decoding="async"></div>
-          <div class="art-layer on"><img src="media/nang/nang-mai-ngoi.jpg" alt="Vách đất, bậc đá và mái ngói truyền thống của Nâng Café" width="890" height="901" loading="lazy" decoding="async"></div>
+          <div class="art-layer on"><img src="media/nang/nang-vach-dat-espresso-sm.jpg" alt="Ly cà phê đen bên vách đất nứt và lọ hoa cúc" width="540" height="720" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-hien-nha-ngay-sm.jpg" alt="Hiên nhà ban ngày dưới mái ngói, đèn mây tre và chiếc Cub đỏ" width="720" height="720" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-tang-go-hanh-lang-sm.jpg" alt="Hành lang tầng gỗ với đèn mây tre" width="720" height="480" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-loi-da-vuon-sm.jpg" alt="Lối đá lát giữa vườn cây" width="720" height="720" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-vach-tre-nang-sm.jpg" alt="Nắng xuyên qua vách tre đan trên tầng gỗ" width="720" height="693" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-mat-tien-ngay-sm.jpg" alt="Mặt tiền nhà vách đất của Nâng Café ban ngày" width="720" height="720" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-ho-ca-duong-xi-sm.jpg" alt="Hồ cá koi dưới tán dương xỉ" width="720" height="720" loading="lazy" decoding="async"></div>
+          <div class="art-layer"><img src="media/nang/nang-tang-go-ban-dai-sm.jpg" alt="Bàn gỗ dài trên tầng hai" width="480" height="720" loading="lazy" decoding="async"></div>
           <div class="mat"></div>
           <div class="guide-no" id="stageNo">01</div>
         </div>
@@ -973,20 +1043,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     <div class="note rv d1">Theo dõi Nâng trên<br>@naang.cafe</div>
   </div>
 
-  <div class="ig-carousel rv">
-    <button class="ig-arrow prev" id="igPrev" type="button" aria-label="Xem ảnh trước" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
-
+  <div class="ig-carousel ig-marquee rv" data-od-id="moments-slider">
     <div class="ig-rail" id="igRail" data-feed="data/nang-feed.json" role="list">
+      <div class="ig-skel" aria-hidden="true"></div>
+      <div class="ig-skel" aria-hidden="true"></div>
+      <div class="ig-skel" aria-hidden="true"></div>
       <div class="ig-skel" aria-hidden="true"></div>
       <div class="ig-skel" aria-hidden="true"></div>
       <div class="ig-skel" aria-hidden="true"></div>
     </div>
 
-    <button class="ig-arrow next" id="igNext" type="button" aria-label="Xem ảnh tiếp theo" hidden>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
-    </button>
   </div>
 
   <div class="ig-fallback" id="igFallback">
@@ -1048,6 +1114,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="wing-grid">
     <article class="wing rv" data-od-id="location-card">
       <div class="arch"></div>
+      <figure class="wing-photo"><img src="media/nang/nang-mat-tien-ngay-sm.jpg" alt="Mặt tiền Nâng Café ban ngày: vách đất, mái ngói, cổng gỗ" width="720" height="720" loading="lazy" decoding="async"></figure>
       <div class="no">Nhà chính · (01)</div>
       <h3>Nâng Café<span>Nhà vách đất · vườn cây · hồ cá nhỏ</span></h3>
       <p class="addr">075 tổ 10, P. Sông Hiến,<br>Thục Phán, Cao Bằng, Việt Nam</p>
@@ -1087,7 +1154,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <footer class="footer" data-od-id="site-footer">
   <div class="foot-grid">
     <div>
-      <img class="foot-logo" src="media/nang/logo-nang-cafe-peach.png" alt="Nâng Café" width="673" height="327" loading="lazy">
+      <img class="foot-logo" src="media/nang/logo-nang-cafe-duo.png" alt="Nâng Café" width="675" height="332" loading="lazy">
       <p class="foot-brandline">Một khởi đầu mới trong trải nghiệm cà phê tại Cao Bằng.</p>
     </div>
     <div>
@@ -1144,6 +1211,234 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   </button>
 </div>
 
+<script type="application/json" id="nangFeed">{
+  "posts": [
+    {
+      "id": "cappuccino",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Một tách cappuccino trong chén sứ xanh, trao tận tay.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-cappuccino-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-cappuccino.jpg"
+        }
+      }
+    },
+    {
+      "id": "ca-koi",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Đàn cá koi trong hồ nhỏ của Nâng.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-ca-koi-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-ca-koi.jpg"
+        }
+      }
+    },
+    {
+      "id": "san-dem",
+      "w": 720,
+      "h": 614,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Sân Nâng khi lên đèn, khách ngồi quanh những bậc đá.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-san-dem-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-san-dem.jpg"
+        }
+      }
+    },
+    {
+      "id": "vach-tre-nang",
+      "w": 720,
+      "h": 693,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Nắng chiều xuyên qua vách tre đan trên tầng gỗ.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-vach-tre-nang-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-vach-tre-nang.jpg"
+        }
+      }
+    },
+    {
+      "id": "ao-dai-do",
+      "w": 720,
+      "h": 479,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Áo dài đỏ trước hiên nhà vách đất.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-ao-dai-do-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-ao-dai-do.jpg"
+        }
+      }
+    },
+    {
+      "id": "goc-nho",
+      "w": 719,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Một góc nhỏ: kệ gỗ, cây xanh và vách tre.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-goc-nho-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-goc-nho.jpg"
+        }
+      }
+    },
+    {
+      "id": "ho-ca-duong-xi",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Hồ cá dưới những tán dương xỉ.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-ho-ca-duong-xi-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-ho-ca-duong-xi.jpg"
+        }
+      }
+    },
+    {
+      "id": "co-dau-chu-re",
+      "w": 720,
+      "h": 479,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Cô dâu chú rể bên cổng gỗ có biển hiệu Nâng.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-co-dau-chu-re-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-co-dau-chu-re.jpg"
+        }
+      }
+    },
+    {
+      "id": "loi-da-vuon",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Lối đá lát giữa vườn cây.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-loi-da-vuon-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-loi-da-vuon.jpg"
+        }
+      }
+    },
+    {
+      "id": "tang-go-ban-dai",
+      "w": 480,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Bàn gỗ dài trên tầng hai, bên khung cửa đỏ.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-tang-go-ban-dai-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-tang-go-ban-dai.jpg"
+        }
+      }
+    },
+    {
+      "id": "mat-tien-ngay",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Mặt tiền Nâng ban ngày: vách đất, mái ngói, cổng gỗ.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-mat-tien-ngay-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-mat-tien-ngay.jpg"
+        }
+      }
+    },
+    {
+      "id": "vach-dat-espresso",
+      "w": 540,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Ly cà phê đen bên vách đất nứt và lọ hoa cúc.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-vach-dat-espresso-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-vach-dat-espresso.jpg"
+        }
+      }
+    },
+    {
+      "id": "hien-nha-ngay",
+      "w": 720,
+      "h": 720,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Hiên nhà ban ngày, đèn mây tre và chiếc Cub đỏ.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-hien-nha-ngay-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-hien-nha-ngay.jpg"
+        }
+      }
+    },
+    {
+      "id": "tang-go-hanh-lang",
+      "w": 720,
+      "h": 480,
+      "permalink": "https://www.instagram.com/naang.cafe/",
+      "mediaType": "IMAGE",
+      "caption": "Hành lang tầng gỗ với đèn mây tre và cây xanh.",
+      "sizes": {
+        "medium": {
+          "mediaUrl": "media/nang/nang-tang-go-hanh-lang-sm.jpg"
+        },
+        "large": {
+          "mediaUrl": "media/nang/nang-tang-go-hanh-lang.jpg"
+        }
+      }
+    }
+  ]
+}</script>
 <script>
 (function(){
   const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1170,20 +1465,53 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     });
   } else {
     document.documentElement.classList.add('locked');
-    let c = 0;
-    (function tick(){
-      c += Math.random()*12 + 4;
-      if (c >= 100){ countEl.textContent = 'Nhà đã lên đèn'; pre.classList.add('ready'); return; }
-      countEl.textContent = 'Đang lên đèn — ' + Math.floor(c) + '%';
-      setTimeout(tick, 70 + Math.random()*110);
-    })();
   }
-  document.getElementById('ticket').addEventListener('click', () => {
-    if (!pre.classList.contains('ready')) return;
-    pre.classList.add('done');
-    document.body.classList.add('started');
-    document.documentElement.classList.remove('locked');
-  });
+
+  // ---- Door gate (GATE_PEEK_V2): tap -> doors part, the homepage shows through the gap -> walk in ----
+  (function gate(){
+    const v = document.getElementById('gateVideo');
+    const OPEN_AT = 3.0, CUT_AT = 4.85, RATE = 1.6;   // only the door-opening part of the clip, played fast
+    // how wide the gap between the two leaves is (0..1 of the doorway) at a given clip time, measured from the clip
+    const GAP = [[3.0,0],[3.3,0.03],[3.6,0.12],[4.0,0.34],[4.3,0.52],[4.6,0.7],[4.85,0.82]];
+    const gapAt = t => { if (t <= GAP[0][0]) return 0; for (let i = 1; i < GAP.length; i++){ const a = GAP[i-1], b = GAP[i]; if (t <= b[0]) return a[1] + (b[1]-a[1]) * (t-a[0]) / (b[0]-a[0]); } return GAP[GAP.length-1][1]; };
+    const SEAM = 52.5, LW = 16.8, RW = 17.5, TOP = 32.6, BOT = 70.5;   // doorway in % of the video frame
+    const hole = f => { const L = (SEAM - LW*f).toFixed(2) + '%', R = (SEAM + RW*f).toFixed(2) + '%';
+      v.style.clipPath = 'polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,' + L + ' ' + TOP + '%,' + R + ' ' + TOP + '%,' + R + ' ' + BOT + '%,' + L + ' ' + BOT + '%,' + L + ' ' + TOP + '%)'; };
+    let started = false, finished = false, raf = 0;
+    const unlock = () => document.documentElement.classList.remove('locked');
+    const finish = (instant) => {
+      if (finished) return; finished = true; cancelAnimationFrame(raf);
+      pre.classList.add('reveal');
+      document.body.classList.add('started');
+      if (instant || prefersReduced){ pre.classList.add('done'); unlock(); return; }
+      try { v.pause(); } catch(e){}
+      pre.classList.add('walk-in');
+      requestAnimationFrame(() => pre.classList.add('done'));
+      setTimeout(unlock, 700);
+    };
+    const track = () => {
+      hole(gapAt(v.currentTime));
+      if (v.currentTime >= CUT_AT || v.ended){ finish(); return; }
+      raf = requestAnimationFrame(track);
+    };
+    const open = () => {
+      if (started || finished || pre.classList.contains('done')) return;
+      started = true;
+      pre.classList.add('opening', 'reveal');           // gate background goes transparent: the homepage sits behind the door
+      document.body.classList.add('started');           // ...and starts lighting up while the doors part
+      countEl.textContent = 'Đang mở cửa';
+      if (prefersReduced || !v || !v.canPlayType('video/mp4')) return finish();
+      const fallback = setTimeout(finish, 6000);       // never trap the visitor
+      const go = () => { v.playbackRate = RATE; v.play().then(() => { raf = requestAnimationFrame(track); }).catch(() => { clearTimeout(fallback); finish(); }); };
+      v.addEventListener('error', () => { clearTimeout(fallback); finish(); }, { once:true });
+      if (v.readyState >= 1){ v.currentTime = OPEN_AT; go(); }
+      else { v.addEventListener('loadedmetadata', () => { v.currentTime = OPEN_AT; go(); }, { once:true }); v.load(); }
+    };
+    document.getElementById('ticket').addEventListener('click', open);
+    pre.addEventListener('click', e => { if (!e.target.closest('.gate-skip')) open(); });
+    document.getElementById('gateSkip').addEventListener('click', e => { e.stopPropagation(); finish(true); });
+    addEventListener('keydown', e => { if (!pre.classList.contains('done') && e.key === 'Escape') finish(true); });
+  })();
 
   document.querySelectorAll('a[data-veil]').forEach(a => {
     a.addEventListener('click', e => {
@@ -1383,6 +1711,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 
         const img = document.createElement('img');
         img.src = src; img.loading = 'lazy'; img.decoding = 'async';
+        if (post.w && post.h) { img.width = post.w; img.height = post.h; }
         img.alt = cap ? cap.slice(0,110) : 'Khoảnh khắc tại Nâng Café';
         img.addEventListener('error', () => card.remove(), {once:true});
         card.appendChild(img);
@@ -1418,6 +1747,16 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       if (!frag.childElementCount) return showFallback();
       rail.innerHTML = '';
       rail.appendChild(frag);
+      if (rail.closest('.ig-marquee')){
+        // second copy for a seamless loop (hidden from assistive tech, not focusable, still opens the lightbox)
+        [...rail.children].forEach((c, i) => {
+          const k = c.cloneNode(true);
+          k.setAttribute('aria-hidden', 'true'); k.tabIndex = -1;
+          k.addEventListener('click', () => openLb(i));
+          rail.appendChild(k);
+        });
+        rail.style.setProperty('--ig-dur', (posts.length * 5.5) + 's');
+      }
       syncArrows();
     };
 
@@ -1440,6 +1779,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     addEventListener('resize', syncArrows);
 
     const load = () => {
+      const inline = document.getElementById('nangFeed');
+      if (inline) { try { return render(JSON.parse(inline.textContent).posts); } catch (e) {} }
       const cached = readCache();
       if (cached) return render(cached);
       fetch(FEED)
@@ -1546,6 +1887,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
     const row = rows[i];
     const a = +row.dataset.art;
     layers.forEach((l,idx) => l.classList.toggle('on', idx === a));
+    const im = layers[a] && layers[a].querySelector('img');
+    if (im) stageFrame.style.aspectRatio = im.getAttribute('width') + ' / ' + im.getAttribute('height');
     rows.forEach((r,idx) => r.classList.toggle('on', idx === i));
     stageNo.textContent = String(i + 1).padStart(2,'0');
     const n = row.querySelector('.n');
