@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nâng Café · Trình chỉnh sửa nội dung</title>
+<link rel="icon" href="media/nang/favicon-nang.png" type="image/png">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+:root{
+  --teal:#0B4A53;                         /* brand primary (logo) */
+  --teal-dk:oklch(from #0B4A53 calc(l - .07) c h);
+  --teal-lt:oklch(from #0B4A53 calc(l + .1) c h);
+  --peach:#FAAA6D;                        /* brand accent (logo) */
+  --peach-dk:oklch(from #FAAA6D calc(l - .08) c h);
+  --ink:#1c2426;
+  --muted:#5d6a6c;
+  --line:#dfe4e3;
+  --panel:#f6f7f6;
+  --surface:#fff;
+  --ok:#1f7a4d; --ok-bg:#e6f3ec;
+  --bad:#b4372d; --bad-bg:#fbeceb;
+  --cmd:#7a4fd0; --cmd-bg:#f1ecfb;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;font-family:"Be Vietnam Pro",system-ui,sans-serif;font-size:13px;color:var(--ink);background:var(--panel);display:flex;flex-direction:column}
+button,select,textarea{font-family:inherit}
+:focus-visible{outline:2px solid var(--peach);outline-offset:2px}
+
+/* ── TOPBAR ── */
+.topbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 14px;background:var(--teal);color:#fff}
+.brand{display:flex;align-items:center;gap:10px;padding-right:6px;margin-right:2px;border-right:1px solid rgba(255,255,255,.18)}
+.brand img{height:26px;width:auto;display:block}
+.brand span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;opacity:.8}
+.field{display:flex;align-items:center;gap:6px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.topbar select{background:var(--teal-dk);color:#fff;border:1px solid rgba(255,255,255,.22);border-radius:6px;padding:6px 8px;font-size:13px;cursor:pointer;min-height:32px}
+.topbar select:hover{background:var(--teal-lt)}
+.seg{display:inline-flex;background:var(--teal-dk);border-radius:8px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:rgba(255,255,255,.78);padding:6px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;min-height:30px}
+.seg button:hover{background:var(--teal-lt);color:#fff}
+.seg button.active{background:var(--peach);color:var(--teal)}
+.seg button.active.edit{background:#fff;color:var(--ok)}
+.seg button.active.command{background:#fff;color:var(--cmd)}
+.btn{border:1px solid transparent;border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;min-height:32px;display:inline-flex;align-items:center;gap:6px}
+.btn svg{width:14px;height:14px}
+.btn-primary{background:var(--peach);color:var(--teal)}
+.btn-primary:hover{background:var(--peach-dk)}
+.btn-ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.3)}
+.btn-ghost:hover{background:var(--teal-lt)}
+.btn-ghost.on{background:#fff;color:var(--teal)}
+.btn-danger{background:transparent;color:#ffd5cf;border-color:rgba(255,213,207,.45)}
+.btn-danger:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+.spacer{flex:1}
+.badge{font-size:12px;font-weight:600;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.14);color:#fff}
+.badge.has{background:var(--peach);color:var(--teal)}
+
+.warning{display:none;background:#fff4e5;color:#7a4a12;border-bottom:1px solid #f3d3a5;padding:9px 14px;font-size:13px}
+.warning code{background:#fde3bd;padding:1px 6px;border-radius:4px}
+
+/* ── MAIN ── */
+.main{flex:1;display:flex;min-height:0}
+.stage{flex:1;display:flex;justify-content:center;background:oklch(from #0B4A53 .93 .01 h);min-width:0;overflow:auto}
+iframe{border:0;background:#fff;width:100%;height:100%;display:block}
+.stage.mobile{padding:18px 0}
+.stage.mobile iframe{width:390px;height:844px;max-height:calc(100% - 4px);border-radius:22px;box-shadow:0 0 0 10px #111,0 20px 50px rgba(0,0,0,.3)}
+
+/* ── SIDE PANEL ── */
+.side{width:370px;flex:none;background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+.tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--line)}
+.tab{flex:1;border:0;background:none;padding:12px 6px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;letter-spacing:.04em}
+.tab:hover{color:var(--ink);background:var(--panel)}
+.tab.active{color:var(--teal);border-bottom-color:var(--teal)}
+.tab .cnt{display:inline-block;min-width:20px;margin-left:4px;padding:1px 6px;border-radius:999px;background:var(--line);color:var(--ink);font-size:11px}
+.tab.active .cnt{background:var(--teal);color:#fff}
+.panes{flex:1;overflow-y:auto}
+.pane{display:none;padding:14px}
+.pane.active{display:block}
+
+.empty{color:var(--muted);text-align:center;padding:28px 12px;line-height:1.6}
+.group{margin-bottom:16px}
+.group-h{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal);padding:4px 0 6px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-bottom:8px}
+.card.cmd{border-left:3px solid var(--cmd)}
+.meta{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;color:var(--muted);margin-bottom:5px;word-break:break-all}
+.old{color:var(--bad);text-decoration:line-through;word-break:break-word}
+.new{color:var(--ok);font-weight:600;word-break:break-word;margin-top:3px}
+.cmd-text{font-weight:500;line-height:1.5}
+.mini{margin-top:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:11px;font-weight:600;padding:4px 9px;border-radius:5px;cursor:pointer}
+.mini:hover{background:var(--line)}
+
+/* command composer */
+.composer{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:14px}
+.crumb{display:flex;flex-wrap:wrap;gap:4px;align-items:center;margin-bottom:8px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px}
+.crumb b{color:var(--muted);font-weight:400}
+.crumb button{border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:2px 7px;border-radius:4px;cursor:pointer;font:inherit}
+.crumb button:hover{background:var(--line)}
+.crumb button.active{background:var(--cmd);border-color:var(--cmd);color:#fff}
+.sel-info{font-size:12px;color:var(--muted);margin-bottom:8px}
+.sel-info b{color:var(--ink)}
+.preview{background:#162024;color:#cfd8d6;border-radius:6px;padding:8px 10px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px;max-height:96px;overflow:auto;white-space:pre-wrap;word-break:break-all;margin-bottom:8px}
+textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:6px;padding:9px 10px;font-size:13px;line-height:1.5;resize:vertical;color:var(--ink)}
+textarea:focus{outline:none;border-color:var(--cmd);box-shadow:0 0 0 3px var(--cmd-bg)}
+.row{display:flex;gap:6px;margin-top:8px}
+.row button{flex:1;min-height:34px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:var(--panel);color:var(--ink)}
+.row button:hover{background:var(--line)}
+.row button.go{background:var(--cmd);border-color:var(--cmd);color:#fff}
+.row button.go:hover{background:oklch(from #7a4fd0 calc(l - .08) c h)}
+
+.help{margin:0 14px 14px;padding:11px 12px;background:var(--surface);border:1px dashed var(--line);border-radius:8px;font-size:12px;line-height:1.65;color:var(--muted)}
+.help b{color:var(--ink)}
+.help kbd{font-family:ui-monospace,Consolas,monospace;font-size:10.5px;border:1px solid var(--line);background:var(--panel);border-radius:3px;padding:0 5px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:var(--teal);color:#fff;padding:9px 16px;border-radius:8px;font-weight:600;opacity:0;transition:.25s;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.toast.show{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><img src="media/nang/logo-nang-cafe-duo.png" alt="Nâng Café" width="675" height="332"><span>Trình chỉnh sửa</span></div>
+
+  <label class="field">Đi tới
+    <select id="sectionSelect" data-od-id="editor-section-select">
+      <option value="top">Màn đầu (hero)</option>
+      <option value="#space">Gian I · Không gian</option>
+      <option value="#drinks">Gian II · Đồ uống</option>
+      <option value="#story">Gian III · Khoảnh khắc</option>
+      <option value="#craft">Gian IV · Câu chuyện</option>
+      <option value="#locations">Gian V · Địa điểm</option>
+      <option value=".final">Lời mời cuối trang</option>
+      <option value=".footer">Chân trang</option>
+    </select>
+  </label>
+
+  <div class="seg" role="group" aria-label="Khổ màn hình">
+    <button class="active" data-view="desktop">Máy tính</button>
+    <button data-view="mobile">Điện thoại</button>
+  </div>
+
+  <div class="seg" role="group" aria-label="Chế độ">
+    <button class="active" data-mode="off">Xem</button>
+    <button class="edit" data-mode="edit">Sửa chữ</button>
+    <button class="command" data-mode="command">Yêu cầu</button>
+  </div>
+
+  <button class="btn btn-ghost" id="preloaderBtn" title="Hiện màn chờ (tấm vé) để sửa chữ trên đó">Màn chờ</button>
+  <button class="btn btn-ghost" id="reloadBtn" title="Tải lại trang">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>Tải lại
+  </button>
+
+  <div class="spacer"></div>
+  <span class="badge" id="totalBadge">0 thay đổi</span>
+  <button class="btn btn-primary" id="exportBtn" data-od-id="editor-export">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Xuất file
+  </button>
+  <button class="btn btn-ghost" id="copyBtn">Sao chép</button>
+  <button class="btn btn-danger" id="resetBtn">Xoá hết</button>
+</header>
+
+<div class="warning" id="warningBar">
+  Trình chỉnh sửa cần chạy qua máy chủ cục bộ, không mở trực tiếp bằng <code>file://</code>. Trong thư mục dự án chạy <code>node serve.mjs</code> rồi mở <code>http://127.0.0.1:8788/nang-editor.html</code>.
+</div>
+
+<div class="main">
+  <div class="stage" id="stage"><iframe id="frame" src="index.html" title="Trang Nâng Café"></iframe></div>
+
+  <aside class="side">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="edits">Chữ đã sửa <span class="cnt" id="cntEdits">0</span></button>
+      <button class="tab" data-tab="commands">Yêu cầu <span class="cnt" id="cntCmds">0</span></button>
+    </div>
+    <div class="panes">
+      <div class="pane active" id="pane-edits"><div id="editsList"></div></div>
+
+      <div class="pane" id="pane-commands">
+        <div class="composer">
+          <div class="empty" id="cmdEmpty" style="padding:14px 6px">Chọn chế độ <b>Yêu cầu</b> ở thanh trên, rồi bấm vào một phần bất kỳ trên trang.</div>
+          <div id="cmdSelected" hidden>
+            <div class="crumb" id="crumb"></div>
+            <div class="sel-info" id="selInfo"></div>
+            <div class="preview" id="htmlPreview"></div>
+            <textarea id="cmdPrompt" placeholder="Mô tả điều bạn muốn, ví dụ:
+• Đổi Gian I thành thực đơn: Cà phê đen 25k, Bạc xỉu 30k…
+• Thêm số hotline 0xxx vào thẻ địa điểm
+• Thay ảnh này bằng ảnh hồ cá
+• Bỏ phần này đi
+• Viết lại câu này ngắn và ấm áp hơn"></textarea>
+            <div class="row">
+              <button id="cmdClear">Bỏ chọn</button>
+              <button class="go" id="cmdAdd">Lưu yêu cầu</button>
+            </div>
+          </div>
+        </div>
+        <div id="cmdsList"></div>
+      </div>
+    </div>
+    <div class="help">
+      <b>Sửa chữ:</b> bấm vào chữ trên trang và gõ trực tiếp. <kbd>Enter</kbd> để lưu, <kbd>Esc</kbd> để huỷ.<br>
+      <b>Yêu cầu:</b> bấm chọn một phần (ảnh, thẻ, cả một gian…) rồi viết điều muốn đổi. Bấm các nút ở dòng đường dẫn để chọn vùng lớn hơn.<br>
+      <b>Xong:</b> bấm <b>Xuất file</b> (hoặc <b>Sao chép</b>), gửi cho Claude để áp dụng vào trang thật.<br>
+      Mọi thay đổi được lưu tự động trên trình duyệt này.
+    </div>
+  </aside>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'nang_editor_v1';
+const PAGE = 'index.html';
+const EDITABLE = ['H1','H2','H3','H4','H5','H6','P','SPAN','A','BUTTON','LI','TD','TH','LABEL','FIGCAPTION','BLOCKQUOTE','Q','EM','STRONG','B','I','SMALL','DIV','SUP'];
+const SKIP = ['SCRIPT','STYLE','NOSCRIPT','SVG','PATH','IFRAME','VIDEO','AUDIO','CANVAS','INPUT','TEXTAREA','SELECT','OPTION'];
+
+let mode = 'off';
+let state = load();
+let selectedEl = null;
+let showPreloader = false;
+
+const $ = id => document.getElementById(id);
+const frame = $('frame'), stage = $('stage');
+
+function load(){ try{ const s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && s.edits && s.commands) return s; }catch(e){} return {edits:[], commands:[]}; }
+function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),1600); }
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const cut = (s,n) => (s=String(s).replace(/\s+/g,' ').trim()).length>n ? s.slice(0,n)+'…' : s;
+
+if (location.protocol === 'file:') $('warningBar').style.display = 'block';
+
+/* ── tabs ── */
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => showTab(t.dataset.tab));
+function showTab(name){
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.tab === name));
+  document.querySelectorAll('.pane').forEach(x => x.classList.toggle('active', x.id === 'pane-' + name));
+}
+
+/* ── view (desktop / mobile) ── */
+document.querySelectorAll('[data-view]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-view]').forEach(x => x.classList.toggle('active', x === b));
+  stage.classList.toggle('mobile', b.dataset.view === 'mobile');
+  reload();   // page reads its breakpoints (e.g. mobile hero video) on load
+});
+function currentView(){ return stage.classList.contains('mobile') ? 'mobile' : 'desktop'; }
+
+/* ── mode ── */
+document.querySelectorAll('[data-mode]').forEach(b => b.onclick = () => setMode(b.dataset.mode));
+function setMode(m){
+  mode = m;
+  document.querySelectorAll('[data-mode]').forEach(x => x.classList.toggle('active', x.dataset.mode === m));
+  if (m !== 'command') clearSelection();
+  applyMode();
+  if (m === 'command') showTab('commands'); else if (m === 'edit') showTab('edits');
+}
+
+/* ── navigation inside the page ── */
+$('sectionSelect').onchange = e => goTo(e.target.value);
+function goTo(sel){
+  const doc = getDoc(); if (!doc) return;
+  const win = frame.contentWindow;
+  if (sel === 'top') return win.scrollTo({top:0, behavior:'smooth'});
+  const el = doc.querySelector(sel); if (!el) return;
+  win.scrollTo({top: el.getBoundingClientRect().top + win.scrollY - 56, behavior:'smooth'});
+}
+$('reloadBtn').onclick = reload;
+function reload(){ clearSelection(); frame.src = PAGE + '?t=' + Date.now(); }
+$('preloaderBtn').onclick = () => {
+  showPreloader = !showPreloader;
+  $('preloaderBtn').classList.toggle('on', showPreloader);
+  preparePage();
+  applyMode();   // re-bind so the ticket text becomes editable (or stops being)
+};
+
+/* ── iframe lifecycle ── */
+function getDoc(){ try { return frame.contentDocument; } catch(e){ return null; } }
+frame.addEventListener('load', () => {
+  setTimeout(() => {
+    try { preparePage(); reapplyEdits(); applyMode(); }
+    catch(err){
+      console.error(err);
+      const w = $('warningBar'); w.style.display = 'block';
+      w.textContent = 'Không truy cập được nội dung trang — hãy mở trình chỉnh sửa qua máy chủ cục bộ (node serve.mjs).';
+    }
+  }, 350);
+});
+
+// Remove the page's entry overlays so every section is visible and clickable.
+function preparePage(){
+  const doc = getDoc(); if (!doc || !doc.body) return;
+  const pre = doc.getElementById('preloader');
+  if (pre){
+    pre.classList.add('ready');
+    pre.classList.toggle('done', !showPreloader);
+  }
+  doc.body.classList.add('started','ready');
+  doc.documentElement.classList.toggle('locked', showPreloader);
+  if (!doc.getElementById('__nang_editor_base')){
+    const s = doc.createElement('style'); s.id = '__nang_editor_base';
+    s.textContent = '.rv{opacity:1!important;transform:none!important}';
+    doc.head.appendChild(s);
+  }
+}
+
+/* ── apply mode to page ── */
+function applyMode(){
+  const doc = getDoc(); if (!doc || !doc.body) return;
+  doc.querySelectorAll('[data-editor-bound]').forEach(el => {
+    el.removeAttribute('contenteditable'); el.removeAttribute('data-editor-bound');
+    el.removeEventListener('blur', onBlur); el.removeEventListener('keydown', onKey);
+    el.removeEventListener('click', stop, true); el.removeEventListener('paste', onPaste);
+  });
+  doc.querySelectorAll('[data-cmd-hover],[data-cmd-selected]').forEach(el => { el.removeAttribute('data-cmd-hover'); el.removeAttribute('data-cmd-selected'); });
+  doc.getElementById('__nang_editor_mode')?.remove();
+  doc.removeEventListener('mouseover', onHover, true);
+  doc.removeEventListener('mouseout', onOut, true);
+  doc.removeEventListener('click', onPick, true);
+  doc.removeEventListener('click', blockLinks, true);
+  if (mode === 'off') return;
+
+  const s = doc.createElement('style'); s.id = '__nang_editor_mode';
+  s.textContent = `
+    [data-editor-bound]:hover{outline:2px dashed #0B4A53!important;outline-offset:2px;cursor:text!important}
+    [data-editor-bound]:focus{outline:2px solid #1f7a4d!important;outline-offset:2px;background:rgba(250,170,109,.22)!important}
+    [data-editor-bound] *{pointer-events:none}
+    [data-cmd-hover]{outline:2px dashed #7a4fd0!important;outline-offset:2px;cursor:crosshair!important}
+    [data-cmd-selected]{outline:3px solid #FAAA6D!important;outline-offset:2px}
+    .ticker-track,.gb-track{animation-play-state:paused!important}`;
+  doc.head.appendChild(s);
+
+  if (mode === 'edit'){
+    doc.addEventListener('click', blockLinks, true);
+    bindEditable(doc.body);
+  } else {
+    doc.addEventListener('mouseover', onHover, true);
+    doc.addEventListener('mouseout', onOut, true);
+    doc.addEventListener('click', onPick, true);
+    if (selectedEl && doc.body.contains(selectedEl)) selectedEl.setAttribute('data-cmd-selected','');
+    else { selectedEl = null; renderSelection(); }
+  }
+}
+function stop(e){ e.preventDefault(); e.stopPropagation(); }
+function blockLinks(e){ if (e.target.closest && e.target.closest('a,button') && !e.target.closest('[data-editor-bound]')) stop(e); }
+
+/* ── edit mode ── */
+function bindEditable(root){
+  root.querySelectorAll(EDITABLE.join(',')).forEach(el => {
+    if (el.closest('script,style,svg,#__nang_editor_mode')) return;
+    if (el.closest('#preloader') && !showPreloader) return;
+    const text = (el.textContent || '').trim();
+    if (!text || text.length > 1200) return;
+    if ([...el.children].some(c => EDITABLE.includes(c.tagName) && (c.textContent||'').trim())) return;
+    el.setAttribute('data-editor-bound','');
+    el.setAttribute('contenteditable','true');
+    el.dataset.editorOriginal = el.textContent;
+    if (el.dataset.editorSource === undefined) el.dataset.editorSource = el.textContent;
+    el.addEventListener('blur', onBlur);
+    el.addEventListener('keydown', onKey);
+    el.addEventListener('click', stop, true);
+    el.addEventListener('paste', onPaste);
+  });
+}
+function onPaste(e){ e.preventDefault(); getDoc().execCommand('insertText', false, (e.clipboardData||window.clipboardData).getData('text/plain')); }
+function onKey(e){
+  if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); e.target.blur(); }
+  if (e.key === 'Escape'){ e.target.textContent = e.target.dataset.editorOriginal; e.target.blur(); }
+}
+// Readable section name for the side panel (grouping).
+const REGIONS = [
+  ['#preloader', 'Cổng cửa gỗ'], ['.page-veil', 'Cổng cửa gỗ'], ['header.nav', 'Thanh menu'], ['.hero', 'Màn đầu (hero)'],
+  ['.ticker', 'Dải chữ chạy'], ['#space', 'Gian I · Không gian'], ['#drinks', 'Gian II · Đồ uống'], ['#story', 'Gian III · Khoảnh khắc'],
+  ['#craft', 'Gian IV · Câu chuyện'], ['#locations', 'Gian V · Địa điểm'], ['.final', 'Lời mời cuối trang'],
+  ['footer', 'Chân trang'], ['#igLb', 'Ảnh phóng to']
+];
+function sectionOf(el){
+  for (const [sel, name] of REGIONS) if (el.closest(sel)) return name;
+  return 'Khác';
+}
+// Nearest inspectable id (data-od-id) — lets Claude locate the element in the source.
+function odIdOf(el){ const o = el.closest('[data-od-id]'); return o ? o.getAttribute('data-od-id') : null; }
+// outerHTML without the editor's own markers
+function cleanHTML(el){
+  const c = el.cloneNode(true);
+  [c, ...c.querySelectorAll('*')].forEach(n => ['data-cmd-selected','data-cmd-hover','data-editor-bound','data-editor-original','data-editor-source','contenteditable'].forEach(a => n.removeAttribute(a)));
+  return c.outerHTML;
+}
+function onBlur(e){
+  const el = e.target, before = el.dataset.editorOriginal, next = el.textContent;
+  if (before === next) return;
+  const source = el.dataset.editorSource;          // text as shipped in index.html
+  const hit = state.edits.find(x => x.original === source);
+  if (next === source) state.edits = state.edits.filter(x => x !== hit);
+  else if (hit) { hit.new = next; hit.ts = Date.now(); }
+  else state.edits.push({ original: source, new: next, tag: el.tagName.toLowerCase(),
+      class: (el.className||'').toString().split(' ').filter(Boolean).slice(0,2).join(' '),
+      section: sectionOf(el), odId: odIdOf(el), view: currentView(), ts: Date.now() });
+  el.dataset.editorOriginal = next;
+  // same text may appear twice (e.g. the scrolling ticker): keep copies in sync
+  getDoc().querySelectorAll('[data-editor-bound]').forEach(o => {
+    if (o !== el && o.dataset.editorSource === source){ o.textContent = next; o.dataset.editorOriginal = next; }
+  });
+  save(); renderAll();
+}
+function reapplyEdits(){
+  const doc = getDoc(); if (!doc || !state.edits.length) return;
+  doc.querySelectorAll(EDITABLE.join(',')).forEach(el => {
+    if ([...el.children].some(c => EDITABLE.includes(c.tagName) && (c.textContent||'').trim())) return;
+    const m = state.edits.find(x => x.original === el.textContent);
+    if (m){ el.dataset.editorSource = m.original; el.textContent = m.new; }
+  });
+}
+
+/* ── command mode ── */
+function onHover(e){
+  const doc = getDoc();
+  if (e.target === doc.body || e.target === doc.documentElement || e.target === selectedEl) return;
+  const t = e.target.closest('svg') || e.target;
+  t.setAttribute('data-cmd-hover','');
+}
+function onOut(e){ (e.target.closest('svg') || e.target).removeAttribute('data-cmd-hover'); }
+function onPick(e){
+  stop(e);
+  const doc = getDoc();
+  if (e.target === doc.body || e.target === doc.documentElement) return;
+  select(e.target.closest('svg') || e.target);
+}
+function select(el){
+  const doc = getDoc(); if (!doc) return;
+  doc.querySelectorAll('[data-cmd-selected],[data-cmd-hover]').forEach(x => { x.removeAttribute('data-cmd-selected'); x.removeAttribute('data-cmd-hover'); });
+  selectedEl = el;
+  if (el) el.setAttribute('data-cmd-selected','');
+  renderSelection();
+  if (el) $('cmdPrompt').focus();
+}
+function clearSelection(){
+  const doc = getDoc();
+  if (doc) doc.querySelectorAll('[data-cmd-selected]').forEach(x => x.removeAttribute('data-cmd-selected'));
+  selectedEl = null; $('cmdPrompt').value = ''; renderSelection();
+}
+$('cmdClear').onclick = clearSelection;
+window.addEventListener('keydown', e => { if (e.key === 'Escape' && mode === 'command') clearSelection(); });
+
+$('cmdAdd').onclick = () => {
+  if (!selectedEl) return;
+  const prompt = $('cmdPrompt').value.trim();
+  if (!prompt){ $('cmdPrompt').focus(); return; }
+  const img = selectedEl.tagName === 'IMG' ? selectedEl.getAttribute('src') : (selectedEl.querySelector && selectedEl.querySelector('img')?.getAttribute('src'));
+  state.commands.push({
+    selector: selectorOf(selectedEl), section: sectionOf(selectedEl), view: currentView(),
+    tag: selectedEl.tagName.toLowerCase(), odId: odIdOf(selectedEl),
+    text: cut(selectedEl.textContent || '', 240), image: img || null,
+    outerHTML: (h => h.length > 4000 ? h.slice(0,4000) + '…' : h)(cleanHTML(selectedEl)),
+    prompt, ts: Date.now()
+  });
+  save(); renderAll(); $('cmdPrompt').value = ''; toast('Đã lưu yêu cầu');
+};
+
+function renderSelection(){
+  const has = !!selectedEl;
+  $('cmdEmpty').hidden = has; $('cmdSelected').hidden = !has;
+  if (!has) return;
+  const chain = []; let cur = selectedEl;
+  while (cur && cur.nodeType === 1 && cur.tagName !== 'BODY'){ chain.unshift(cur); cur = cur.parentElement; }
+  const crumb = $('crumb'); crumb.innerHTML = '';
+  chain.slice(-6).forEach((el, i, arr) => {
+    const b = document.createElement('button');
+    b.className = el === selectedEl ? 'active' : '';
+    const od = el.getAttribute('data-od-id');
+    const cls = (el.className && el.className.baseVal === undefined ? el.className : '').toString().split(' ').filter(Boolean)[0];
+    b.textContent = od ? od : el.tagName.toLowerCase() + (el.id ? '#' + el.id : cls ? '.' + cls : '');
+    b.title = 'Chọn vùng này';
+    b.onclick = () => select(el);
+    crumb.appendChild(b);
+    if (i < arr.length - 1){ const s = document.createElement('b'); s.textContent = '›'; crumb.appendChild(s); }
+  });
+  const r = selectedEl.getBoundingClientRect();
+  $('selInfo').innerHTML = `<b>${esc(sectionOf(selectedEl))}</b> · ${selectedEl.tagName.toLowerCase()} · ${Math.round(r.width)}×${Math.round(r.height)}px`;
+  const html = cleanHTML(selectedEl);
+  $('htmlPreview').textContent = html.length > 500 ? html.slice(0,500) + '\n…(+' + (html.length-500) + ' ký tự)' : html;
+}
+function selectorOf(el){
+  const parts = []; let cur = el;
+  while (cur && cur.nodeType === 1 && cur.tagName !== 'BODY' && cur.tagName !== 'HTML'){
+    let p = cur.tagName.toLowerCase();
+    if (cur.id){ parts.unshift(p + '#' + cur.id); break; }
+    const od = cur.getAttribute('data-od-id');
+    if (od){ parts.unshift(`[data-od-id="${od}"]`); break; }
+    const cls = (typeof cur.className === 'string' ? cur.className : '').split(' ').filter(Boolean)[0];
+    if (cls) p += '.' + CSS.escape(cls);
+    const same = cur.parentElement ? [...cur.parentElement.children].filter(c => c.tagName === cur.tagName) : [];
+    if (same.length > 1) p += `:nth-of-type(${same.indexOf(cur)+1})`;
+    parts.unshift(p); cur = cur.parentElement;
+  }
+  return parts.join(' > ');
+}
+
+/* ── side panel render ── */
+function groupBy(list){ const g = {}; list.forEach((x,i) => (g[x.section] ||= []).push({...x, _i:i})); return g; }
+function renderAll(){
+  const e = state.edits.length, c = state.commands.length, t = e + c;
+  $('cntEdits').textContent = e; $('cntCmds').textContent = c;
+  $('totalBadge').textContent = t + ' thay đổi'; $('totalBadge').classList.toggle('has', t > 0);
+
+  const el = $('editsList');
+  if (!e) el.innerHTML = '<div class="empty">Chưa sửa chữ nào.<br>Chọn <b>Sửa chữ</b> ở thanh trên rồi bấm vào chữ trên trang.</div>';
+  else {
+    el.innerHTML = '';
+    Object.entries(groupBy(state.edits)).forEach(([sec, items]) => {
+      const g = document.createElement('div'); g.className = 'group';
+      g.innerHTML = `<div class="group-h">${esc(sec)} · ${items.length}</div>`;
+      items.forEach(x => {
+        const d = document.createElement('div'); d.className = 'card';
+        d.innerHTML = `<div class="meta">&lt;${x.tag}${x.class ? '.' + esc(x.class.split(' ')[0]) : ''}&gt; · ${x.view === 'mobile' ? 'điện thoại' : 'máy tính'}</div>
+          <div class="old">${esc(cut(x.original,120))}</div><div class="new">→ ${esc(cut(x.new,120))}</div>
+          <button class="mini" data-undo="${x._i}">Hoàn tác</button>`;
+        g.appendChild(d);
+      });
+      el.appendChild(g);
+    });
+    el.querySelectorAll('[data-undo]').forEach(b => b.onclick = () => { state.edits.splice(+b.dataset.undo, 1); save(); renderAll(); reload(); });
+  }
+
+  const cl = $('cmdsList');
+  if (!c) cl.innerHTML = '<div class="empty" style="padding:10px">Chưa có yêu cầu nào.</div>';
+  else {
+    cl.innerHTML = '';
+    Object.entries(groupBy(state.commands)).forEach(([sec, items]) => {
+      const g = document.createElement('div'); g.className = 'group';
+      g.innerHTML = `<div class="group-h">${esc(sec)} · ${items.length}</div>`;
+      items.forEach(x => {
+        const d = document.createElement('div'); d.className = 'card cmd';
+        d.innerHTML = `<div class="meta">${esc(x.selector)}</div><div class="cmd-text">${esc(cut(x.prompt,240))}</div>
+          <button class="mini" data-del="${x._i}">Xoá</button>`;
+        g.appendChild(d);
+      });
+      cl.appendChild(g);
+    });
+    cl.querySelectorAll('[data-del]').forEach(b => b.onclick = () => { state.commands.splice(+b.dataset.del, 1); save(); renderAll(); });
+  }
+}
+
+/* ── export / copy / reset ── */
+function bundle(){ return { site: 'Nâng Café', page: PAGE, exportedAt: new Date().toISOString(), edits: state.edits, commands: state.commands }; }
+function empty(){ return !state.edits.length && !state.commands.length; }
+$('exportBtn').onclick = () => {
+  if (empty()) return toast('Chưa có thay đổi nào để xuất');
+  const url = URL.createObjectURL(new Blob([JSON.stringify(bundle(), null, 2)], {type:'application/json'}));
+  const a = document.createElement('a'); a.href = url;
+  a.download = `nang-chinh-sua-${new Date().toISOString().slice(0,10)}.json`; a.click();
+  URL.revokeObjectURL(url); toast('Đã xuất file');
+};
+$('copyBtn').onclick = async () => {
+  if (empty()) return toast('Chưa có thay đổi nào để sao chép');
+  const text = JSON.stringify(bundle(), null, 2);
+  try { await navigator.clipboard.writeText(text); toast('Đã sao chép'); }
+  catch(e){ window.prompt('Sao chép thủ công:', text); }
+};
+$('resetBtn').onclick = () => {
+  const t = state.edits.length + state.commands.length; if (!t) return;
+  if (!confirm(`Xoá tất cả ${t} thay đổi đang chờ?`)) return;
+  state = {edits:[], commands:[]}; save(); renderAll(); reload();
+};
+
+renderAll();
+</script>
+</body>
+</html>
