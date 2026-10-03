@@ -232,7 +232,7 @@ body.started .nav{opacity:1}
 .nav.scrolled .cta-cell .arr{background:var(--gold);color:var(--red)}
 .nav .cta-cell:hover .arr{transform:translateX(4px)}
 .nav .links-wrap{display:flex;align-items:stretch}
-@media(max-width:1080px){.nav .links-wrap{display:none}}
+@media(max-width:1280px){.nav .links-wrap{display:none}}
 @media(max-width:640px){.nav .lang{display:none}}
 .hero{
   position:relative;min-height:100vh;min-height:100svh;overflow:hidden;
@@ -748,6 +748,61 @@ body.started .hero-copy>*,body.started .grating{opacity:1;transform:none}
 }
 
 /* ===== Nâng rebrand ===== */
+/* ===== Gian II · Đồ uống (menu 15-9): teal room between the cream rooms ===== */
+.drinks .room-head .note{max-width:none}
+.dk-kicker{display:flex;align-items:baseline;flex-wrap:wrap;gap:.4rem 1rem;border-bottom:1px solid rgba(250,170,109,.5);padding-bottom:.7rem;margin-bottom:1.8rem}
+.dk-kicker>span:first-child{font-family:var(--display);text-transform:uppercase;font-size:var(--fs-d3);letter-spacing:.06em;color:var(--gold-lt)}
+.dk-kicker-sub{font-family:var(--ui);font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.sig-row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:clamp(.8rem,1.6vw,1.6rem)}
+.sig-card{background:var(--cream);color:var(--ink);box-shadow:0 18px 40px rgba(4,30,35,.35);transition:transform .5s cubic-bezier(.22,1,.36,1),box-shadow .5s}
+.sig-card:hover{transform:translateY(-6px);box-shadow:0 26px 50px rgba(4,30,35,.45)}
+.sig-shot{aspect-ratio:640/573;overflow:hidden}
+.sig-shot img{width:100%;height:100%;object-fit:cover;transform:scale(1.04);display:block}
+.sig-meta{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem;padding:.85rem 1rem 1rem;border-top:1px solid var(--gold)}
+.sig-name{font-family:var(--display);text-transform:uppercase;font-size:var(--fs-lead);line-height:1.15;letter-spacing:.02em;text-wrap:balance}
+.sig-price{font-family:var(--ui);font-weight:600;color:var(--red);font-size:var(--fs-lead);white-space:nowrap}
+.dk-menu{margin-top:clamp(3.5rem,9vh,6rem)}
+.dk-tabs{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:2.4rem}
+.dk-tab{font:600 var(--fs-label)/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;color:var(--cream);background:transparent;
+  border:1px solid rgba(250,170,109,.45);padding:0 1.1rem;min-height:44px;display:inline-flex;align-items:center;gap:.6rem;cursor:pointer;white-space:nowrap;
+  transition:background .3s,border-color .3s,color .3s}
+.dk-tab:hover{background:rgba(247,242,231,.1);border-color:var(--gold)}
+.dk-tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:var(--red-dp)}
+.dk-tab:focus-visible{outline:2px solid var(--gold-lt);outline-offset:3px}
+.dk-count{font-weight:500;opacity:.65}
+.dk-panel-note{font-family:var(--ui);font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin:0 0 1.6rem}
+.dk-panel:not([hidden]){animation:dkIn .5s ease both}
+@keyframes dkIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.dk-grid{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;gap:2.8rem clamp(1rem,2.4vw,2.4rem)}
+.dk-grid>.dk-item{width:clamp(150px,16vw,220px)}
+.dk-item{display:flex;flex-direction:column;align-items:center;text-align:center;min-width:0}
+.dk-shot{position:relative;width:100%;aspect-ratio:1;margin-bottom:1rem;
+  background:radial-gradient(closest-side,rgba(252,196,151,.22),rgba(252,196,151,0) 72%)}
+.dk-shot img{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);max-width:84%;max-height:90%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 16px 16px rgba(2,22,26,.45));transition:transform .5s cubic-bezier(.22,1,.36,1)}
+.dk-item:hover .dk-shot img{transform:translateX(-50%) translateY(-6px) rotate(-2deg)}
+.dk-star{position:absolute;top:.3rem;left:.3rem;z-index:1;font:600 10px/1 var(--ui);letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--red-dp);padding:.5em .75em}
+.dk-name{font-family:var(--display);text-transform:uppercase;font-size:var(--fs-lead);line-height:1.2;letter-spacing:.02em;text-wrap:balance}
+.dk-desc{font-size:var(--fs-sm);opacity:.72;margin-top:.35rem;line-height:1.5;text-wrap:balance}
+.dk-price{margin-top:.6rem;font:600 var(--fs-lead)/1 var(--ui);color:var(--gold-lt)}
+.dk-foot{margin-top:3.2rem;font-family:var(--ui);font-size:var(--fs-label);letter-spacing:.12em;text-transform:uppercase;opacity:.55;text-align:center;text-wrap:balance}
+@media(max-width:960px){
+  .sig-row{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:min(62%,260px);overflow-x:auto;scroll-snap-type:x mandatory;
+    margin:0 calc(-1 * var(--gutter));padding:0 var(--gutter) 1.2rem;scroll-padding-inline:var(--gutter);scrollbar-width:none}
+  .sig-row::-webkit-scrollbar{display:none}
+  .sig-card{scroll-snap-align:start}
+  .sig-card:hover{transform:none}
+  .dk-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 calc(-1 * var(--gutter)) 2rem;padding:0 var(--gutter) .4rem;scrollbar-width:none}
+  .dk-tabs::-webkit-scrollbar{display:none}
+  .dk-tab{flex:none}
+}
+@media(max-width:600px){
+  .dk-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2.2rem 1rem}
+  .dk-grid>.dk-item{width:auto}
+  .dk-name{font-size:var(--fs-sm)}
+  .dk-desc{font-size:.8rem}
+}
+@media (prefers-reduced-motion:reduce){.dk-panel:not([hidden]){animation:none}}
+
 /* ===== Door gate (replaces the ticket) ===== */
 html.arrive .gate{display:none}
 .gate{position:fixed;inset:0;z-index:10000;overflow:hidden;background:#120d09;color:var(--cream);
@@ -770,10 +825,27 @@ html.arrive .gate{display:none}
   box-shadow:inset 0 0 26px rgba(255,200,140,.35);animation:gateGlow 3.2s ease-in-out infinite;transition:opacity .35s}
 @keyframes gateGlow{0%,100%{opacity:.8}50%{opacity:1}}
 .gate.opening .gate-glow{opacity:0;animation:none}
+/* door edges: a hot rim of light around the two leaves, flickering like a lamp, sparkles twinkling on the edges */
+.gate-rim,.gate-sparks{position:absolute;left:35.7%;top:32.6%;width:34.3%;height:37.9%;pointer-events:none;transition:opacity .3s}
+.gate-rim{border-radius:2px;mix-blend-mode:screen;
+  box-shadow:0 0 0 1.5px rgba(255,226,170,.95),0 0 8px 2px rgba(255,200,120,.9),0 0 22px 5px rgba(255,168,84,.6),0 0 46px 10px rgba(255,140,60,.28),
+    inset 0 0 6px 1px rgba(255,230,180,.85),inset 0 0 18px 3px rgba(255,180,100,.45);
+  animation:gateFlicker 2.6s linear infinite}
+@keyframes gateFlicker{0%{opacity:.82}6%{opacity:1}8%{opacity:.62}10%{opacity:.98}24%{opacity:.88}31%{opacity:1}33%{opacity:.7}35%{opacity:.96}
+  52%{opacity:.84}58%{opacity:1}71%{opacity:.9}73%{opacity:.58}75%{opacity:1}88%{opacity:.86}100%{opacity:.82}}
+.gate-sparks{mix-blend-mode:screen}
+.spark{position:absolute;width:var(--s);aspect-ratio:1;opacity:0;transform:translate(-50%,-50%) scale(.2);
+  background:radial-gradient(circle,#fff 0 10%,rgba(255,226,170,.9) 20%,transparent 46%),
+    linear-gradient(90deg,transparent 46%,#fff6e4 50%,transparent 54%),linear-gradient(0deg,transparent 46%,#fff6e4 50%,transparent 54%);
+  -webkit-mask:radial-gradient(circle,#000 18%,transparent 70%);mask:radial-gradient(circle,#000 18%,transparent 70%);
+  animation:gateTwinkle var(--d) ease-in-out var(--dl) infinite}
+@keyframes gateTwinkle{0%,100%{opacity:0;transform:translate(-50%,-50%) scale(.2) rotate(0)}45%{opacity:1;transform:translate(-50%,-50%) scale(1) rotate(30deg)}60%{opacity:.9}}
+.gate.opening .gate-rim,.gate.opening .gate-sparks{opacity:0;animation:none}
+@media (prefers-reduced-motion:reduce){.gate-rim{animation:none}.gate-sparks{display:none}}
 .gate-seam{position:absolute;left:52.5%;top:33%;width:.5%;height:37%;transform:translateX(-50%);border-radius:2px;
   background:linear-gradient(180deg,transparent,rgba(255,186,110,.85) 18%,rgba(255,206,140,.95) 50%,rgba(255,186,110,.85) 82%,transparent);
   filter:blur(1.5px);mix-blend-mode:screen;animation:gateSeam 3.2s ease-in-out infinite}
-@keyframes gateSeam{0%,100%{opacity:.25}50%{opacity:.85}}
+@keyframes gateSeam{0%,100%{opacity:.55}50%{opacity:1}}
 .gate-ring{position:absolute;left:53.2%;top:53.5%;width:12%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
   border:1.5px solid rgba(250,170,109,.85);animation:gateRing 2.6s ease-out infinite;pointer-events:none}
 @keyframes gateRing{0%{opacity:.9;transform:translate(-50%,-50%) scale(.45)}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
@@ -793,8 +865,8 @@ html.arrive .gate{display:none}
 .gate.opening .gate-seam,.gate.opening .gate-ring,.gate.opening .gate-hint,.gate.opening .gate-top,.gate.opening .gate-skip{opacity:0;animation:none;pointer-events:none}
 .gate.opening .gate-door{cursor:default}
 /* final move: keep walking into the dark doorway while the homepage comes up behind */
-.gate.walk-in .gate-stage{transition:transform .7s cubic-bezier(.5,0,.8,.4);transform:scale(3.2)}
-.gate.walk-in{transition:opacity .55s ease .12s,visibility 0s linear .7s}
+.gate.walk-in .gate-stage{transition:transform 1.1s cubic-bezier(.45,0,.75,.45);transform:scale(3.2)}
+.gate.walk-in{transition:opacity .8s ease .3s,visibility 0s linear 1.1s}
 @media (prefers-reduced-motion:reduce){.gate-seam,.gate-ring{animation:none}.gate.walk-in .gate-stage{transform:none}}
 
 .nav .brand-img{display:block;height:32px;width:auto;filter:drop-shadow(0 1px 4px rgba(0,0,0,.45))}
@@ -819,7 +891,7 @@ a.grating:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 #spaceList .mi{cursor:pointer}
 #spaceList .mi .pr{font-family:var(--display);font-weight:800;letter-spacing:.04em}
 #spaceList .mi.on{background:rgba(11,74,83,.06);padding-left:1rem}
-/* Gian II · auto-slider: continuous loop, faded edges, pause on hover/focus */
+/* Gian III · auto-slider: continuous loop, faded edges, pause on hover/focus */
 .ig-marquee{overflow:hidden;padding:6px 0;
   -webkit-mask:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);mask:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%)}
 .ig-marquee .ig-rail{overflow:visible;scroll-snap-type:none;width:max-content;gap:14px;animation:igLoop var(--ig-dur,70s) linear infinite}
@@ -842,7 +914,7 @@ a.grating:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 .menu-stage .art-layer img{width:100%;height:100%;object-fit:cover;display:block}
 .menu-stage .frame{transition:aspect-ratio .5s ease}
 .stage-cap{margin-top:2.2rem;font-size:var(--fs-label);letter-spacing:.14em;text-transform:uppercase;font-weight:500;opacity:.6;text-align:center;max-width:32ch}
-/* Gian III · founder's letter (teal room between the cream rooms) */
+/* Gian IV · founder's letter (teal room between the cream rooms) */
 .gallery.letter{padding-bottom:12vh}
 .letter-body{max-width:40rem;margin:0 auto;font-size:clamp(1.02rem,1.25vw,1.12rem);line-height:1.9;color:var(--cream)}
 .letter-body p{margin:0 0 1.5em;text-wrap:pretty}
@@ -879,6 +951,8 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       <source src="media/nang/cua-nang-mo.mp4" type="video/mp4">
     </video>
     <span class="gate-glow" aria-hidden="true"></span>
+    <span class="gate-rim" aria-hidden="true"></span>
+    <span class="gate-sparks" id="gateSparks" aria-hidden="true"></span>
     <span class="gate-seam" aria-hidden="true"></span>
     <span class="gate-ring" aria-hidden="true"></span>
     <button class="gate-door" id="ticket" type="button" aria-label="Mở cửa, vào Nâng Café" data-od-id="gate-door"></button>
@@ -904,9 +978,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <span class="cell spacer" style="border-right:none"></span>
   <nav class="links-wrap">
     <a class="cell" href="#space">Gian I · Không gian</a>
-    <a class="cell" href="#story">Gian II · Khoảnh khắc</a>
-    <a class="cell" href="#craft">Gian III · Câu chuyện</a>
-    <a class="cell" href="#locations">Gian IV · Địa điểm</a>
+    <a class="cell" href="#drinks">Gian II · Đồ uống</a>
+    <a class="cell" href="#story">Gian III · Khoảnh khắc</a>
+    <a class="cell" href="#craft">Gian IV · Câu chuyện</a>
+    <a class="cell" href="#locations">Gian V · Địa điểm</a>
   </nav>
   <a class="cell cta-cell" href="#locations" data-od-id="nav-cta">Ghé Nâng <span class="arr">→</span></a>
 </header>
@@ -1034,10 +1109,326 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   <div class="floor"></div>
 </section>
 
-<section class="gallery cube" id="story" data-od-id="section-moments">
+<!-- DRINKS:START (generated by build-drinks.mjs from Menu 15-9) -->
+<section class="gallery drinks" id="drinks" data-od-id="section-drinks">
   <div class="room-head">
     <div class="left rv">
       <div class="no">Gian II.</div>
+      <h2 data-od-id="drinks-title">Đồ uống<br><span class="serif-i">của Nâng</span></h2>
+    </div>
+    <div class="note rv d1">Giá tính theo nghìn đồng<br>Đá hay nóng cùng một giá<br>Mở cửa 7:00 — 22:00</div>
+  </div>
+
+  <div class="sig-wrap rv" data-od-id="drinks-signature">
+    <div class="dk-kicker"><span>Signature</span><span class="dk-kicker-sub">Đặc biệt của Nâng</span></div>
+    <ul class="sig-row">
+      <li class="sig-card" data-od-id="signature-ca-phe-hat-de">
+        <div class="sig-shot"><img src="media/menu/sig-ca-phe-hat-de.jpg" alt="Cà phê hạt dẻ" width="640" height="573" loading="lazy" decoding="async"></div>
+        <div class="sig-meta"><span class="sig-name">Cà phê hạt dẻ</span><span class="sig-price">55k</span></div>
+      </li>
+      <li class="sig-card" data-od-id="signature-matcha-hat-de">
+        <div class="sig-shot"><img src="media/menu/sig-matcha-hat-de.jpg" alt="Matcha hạt dẻ" width="640" height="573" loading="lazy" decoding="async"></div>
+        <div class="sig-meta"><span class="sig-name">Matcha hạt dẻ</span><span class="sig-price">60k</span></div>
+      </li>
+      <li class="sig-card" data-od-id="signature-tra-mac-kham">
+        <div class="sig-shot"><img src="media/menu/sig-tra-mac-kham.jpg" alt="Trà mác kham" width="640" height="573" loading="lazy" decoding="async"></div>
+        <div class="sig-meta"><span class="sig-name">Trà mác kham</span><span class="sig-price">50k</span></div>
+      </li>
+      <li class="sig-card" data-od-id="signature-nuoc-ep-mac-kham">
+        <div class="sig-shot"><img src="media/menu/sig-nuoc-ep-mac-kham.jpg" alt="Nước ép mác kham" width="640" height="573" loading="lazy" decoding="async"></div>
+        <div class="sig-meta"><span class="sig-name">Nước ép mác kham</span><span class="sig-price">45k</span></div>
+      </li>
+      <li class="sig-card" data-od-id="signature-tra-sua-hat-de">
+        <div class="sig-shot"><img src="media/menu/sig-tra-sua-hat-de.jpg" alt="Trà sữa hạt dẻ" width="640" height="573" loading="lazy" decoding="async"></div>
+        <div class="sig-meta"><span class="sig-name">Trà sữa hạt dẻ</span><span class="sig-price">55k</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="dk-menu rv" data-od-id="drinks-menu">
+    <div class="dk-tabs" role="tablist" aria-label="Nhóm đồ uống">
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-ca-phe" aria-controls="dk-panel-ca-phe" aria-selected="true" tabindex="0" data-od-id="drinks-tab-ca-phe">Cà phê<span class="dk-count">8</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-tra" aria-controls="dk-panel-tra" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-tra">Trà<span class="dk-count">5</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-matcha" aria-controls="dk-panel-matcha" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-matcha">Matcha<span class="dk-count">3</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-tra-sua" aria-controls="dk-panel-tra-sua" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-tra-sua">Trà sữa<span class="dk-count">4</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-sinh-to" aria-controls="dk-panel-sinh-to" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-sinh-to">Sinh tố · Sữa chua<span class="dk-count">5</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-nuoc-ep" aria-controls="dk-panel-nuoc-ep" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-nuoc-ep">Nước ép<span class="dk-count">6</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-khac" aria-controls="dk-panel-khac" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-khac">Đồ uống khác<span class="dk-count">4</span></button>
+      <button class="dk-tab" role="tab" type="button" id="dk-tab-an-nhe" aria-controls="dk-panel-an-nhe" aria-selected="false" tabindex="-1" data-od-id="drinks-tab-an-nhe">Đồ ăn nhẹ<span class="dk-count">5</span></button>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-ca-phe" aria-labelledby="dk-tab-ca-phe">
+      <p class="dk-panel-note">Robusta Gia Lai · Arabica Blend</p>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-ca-phe-den">
+          <div class="dk-shot"><img src="media/menu/ca-phe-den.png" alt="Cà phê đen" width="328" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cà phê đen</div>
+          <div class="dk-desc">Robusta Gia Lai</div>
+          <div class="dk-price">25k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-ca-phe-nau">
+          <div class="dk-shot"><img src="media/menu/ca-phe-nau.png" alt="Cà phê nâu" width="328" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cà phê nâu</div>
+          <div class="dk-desc">Robusta, sữa đặc</div>
+          <div class="dk-price">30k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-bac-siu-ca-phe-muoi">
+          <div class="dk-shot"><img src="media/menu/bac-siu.png" alt="Bạc sỉu / Cà phê muối" width="324" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Bạc sỉu / Cà phê muối</div>
+          <div class="dk-desc">sữa đặc, ít cà phê</div>
+          <div class="dk-price">35k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-espresso">
+          <div class="dk-shot"><img src="media/menu/espresso.png" alt="Espresso" width="328" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Espresso</div>
+          <div class="dk-desc">Arabica Blend</div>
+          <div class="dk-price">35k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-latte-cappuccino">
+          <div class="dk-shot"><img src="media/menu/latte-cappu.png" alt="Latte / Cappuccino" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Latte / Cappuccino</div>
+          <div class="dk-desc">Arabica, sữa tươi</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-americano">
+          <div class="dk-shot"><img src="media/menu/americano.png" alt="Americano" width="315" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Americano</div>
+          <div class="dk-desc">Arabica Blend</div>
+          <div class="dk-price">35k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-cold-brew-chanh-vang">
+          <div class="dk-shot"><span class="dk-star">Nên thử</span><img src="media/menu/coldbrew-chanh-vang.png" alt="Cold Brew chanh vàng" width="315" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cold Brew chanh vàng</div>
+          <div class="dk-desc">cà phê ủ lạnh 24h, chanh vàng</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-cold-brew-vai-sau-mo">
+          <div class="dk-shot"><img src="media/menu/coldbrew-vai.png" alt="Cold Brew vải / sấu / mơ" width="315" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cold Brew vải / sấu / mơ</div>
+          <div class="dk-desc">cà phê ủ lạnh, vải / sấu / mơ</div>
+          <div class="dk-price">50k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-tra" aria-labelledby="dk-tab-tra" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-tra-mo-muoi-o-mai">
+          <div class="dk-shot"><span class="dk-star">Nên thử</span><img src="media/menu/tra-mo-muoi-glass.png" alt="Trà mơ muối ô mai" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà mơ muối ô mai</div>
+          <div class="dk-desc">trà shan tuyết, mơ muối</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-vai-man-tam-hoa">
+          <div class="dk-shot"><span class="dk-star">Nên thử</span><img src="media/menu/tra-vai-man-tam-hoa-glass.png" alt="Trà vải mận tam hoa" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà vải mận tam hoa</div>
+          <div class="dk-desc">trà xanh, vải, mận</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-dao-atiso">
+          <div class="dk-shot"><img src="media/menu/tra-dao-atiso-glass.png" alt="Trà đào atisô" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà đào atisô</div>
+          <div class="dk-desc">trà đào, atisô</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-dao-cam-xa">
+          <div class="dk-shot"><img src="media/menu/tra-dao-cam-xa-glass.png" alt="Trà đào cam xả" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà đào cam xả</div>
+          <div class="dk-desc">trà đào, cam, xả</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-oi-hong">
+          <div class="dk-shot"><img src="media/menu/tra-oi-hong-glass.png" alt="Trà ổi hồng" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà ổi hồng</div>
+          <div class="dk-desc">trà xanh, ổi hồng</div>
+          <div class="dk-price">45k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-matcha" aria-labelledby="dk-tab-matcha" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-matcha-dua-xiem">
+          <div class="dk-shot"><img src="media/menu/matcha-coco.png" alt="Matcha dừa xiêm" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Matcha dừa xiêm</div>
+          <div class="dk-desc">matcha Nhật, nước cốt dừa</div>
+          <div class="dk-price">55k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-matcha-cold-whisk-yen-mach">
+          <div class="dk-shot"><span class="dk-star">Nên thử</span><img src="media/menu/matcha-coldwisk.png" alt="Matcha cold whisk yến mạch" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Matcha cold whisk yến mạch</div>
+          <div class="dk-desc">matcha Nhật, đánh lạnh</div>
+          <div class="dk-price">55k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-matcha-latte">
+          <div class="dk-shot"><img src="media/menu/matcha-latte-new.png" alt="Matcha latte" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Matcha latte</div>
+          <div class="dk-desc">matcha Nhật, sữa tươi</div>
+          <div class="dk-price">50k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-tra-sua" aria-labelledby="dk-tab-tra-sua" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-tra-sua-hat-de">
+          <div class="dk-shot"><img src="media/menu/tra-sua-hat-de.png" alt="Trà sữa hạt dẻ" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà sữa hạt dẻ</div>
+          <div class="dk-desc">hồng trà, hạt dẻ</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-o-long-hanh-nhan">
+          <div class="dk-shot"><img src="media/menu/o-long-sua.png" alt="Ô long hạnh nhân" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Ô long hạnh nhân</div>
+          <div class="dk-desc">trà ô long, sữa hạnh nhân</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-hong-tra-thach-den">
+          <div class="dk-shot"><img src="media/menu/hong-tra-thach-den.png" alt="Hồng trà thạch đen" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Hồng trà thạch đen</div>
+          <div class="dk-desc">hồng trà, thạch đen</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-sua-ca-phe">
+          <div class="dk-shot"><img src="media/menu/tra-sua-ca-phe.png" alt="Trà sữa cà phê" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà sữa cà phê</div>
+          <div class="dk-desc">hồng trà, cà phê, sữa</div>
+          <div class="dk-price">50k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-sinh-to" aria-labelledby="dk-tab-sinh-to" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-sen-com-cot-dua">
+          <div class="dk-shot"><img src="media/menu/sen-com-cot-dua.png" alt="Sen cốm cốt dừa" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Sen cốm cốt dừa</div>
+          <div class="dk-desc">hạt sen, cốm, nước cốt dừa</div>
+          <div class="dk-price">55k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-chanh-tuyet">
+          <div class="dk-shot"><img src="media/menu/chanh-tuyet.png" alt="Chanh tuyết" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Chanh tuyết</div>
+          <div class="dk-desc">chanh tươi, đá xay</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-sinh-to-xoai">
+          <div class="dk-shot"><img src="media/menu/sinh-to-xoai-glass.png" alt="Sinh tố xoài" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Sinh tố xoài</div>
+          <div class="dk-desc">xoài tươi, sữa</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-sinh-to-mang-cau">
+          <div class="dk-shot"><img src="media/menu/mang-cau-glass.png" alt="Sinh tố mãng cầu" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Sinh tố mãng cầu</div>
+          <div class="dk-desc">mãng cầu tươi, sữa</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-sua-chua-chanh-leo">
+          <div class="dk-shot"><img src="media/menu/sua-chua-chanh-leo-glass.png" alt="Sữa chua chanh leo" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Sữa chua chanh leo</div>
+          <div class="dk-desc">sữa chua, chanh leo, hạt đác</div>
+          <div class="dk-price">50k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-nuoc-ep" aria-labelledby="dk-tab-nuoc-ep" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-dua-hau">
+          <div class="dk-shot"><img src="media/menu/dua-hau-glass.png" alt="Dưa hấu" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Dưa hấu</div>
+          <div class="dk-price">40k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-luu">
+          <div class="dk-shot"><img src="media/menu/nuoc-ep-luu-glass.png" alt="Lựu" width="315" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Lựu</div>
+          <div class="dk-price">50k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-cam-tao">
+          <div class="dk-shot"><img src="media/menu/nuoc-ep-tao-glass.png" alt="Cam / Táo" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cam / Táo</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-chanh-day">
+          <div class="dk-shot"><img src="media/menu/chanh-day-glass.png" alt="Chanh dây" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Chanh dây</div>
+          <div class="dk-price">40k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-chanh-tuoi">
+          <div class="dk-shot"><img src="media/menu/chanh-tuoi-glass.png" alt="Chanh tươi" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Chanh tươi</div>
+          <div class="dk-price">30k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-dua-xiem">
+          <div class="dk-shot"><img src="media/menu/dua-xiem.png" alt="Dừa xiêm" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Dừa xiêm</div>
+          <div class="dk-price">35k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-khac" aria-labelledby="dk-tab-khac" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-sua-tuoi-tran-chau">
+          <div class="dk-shot"><img src="media/menu/sua-tuoi-tran-chau.png" alt="Sữa tươi trân châu" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Sữa tươi trân châu</div>
+          <div class="dk-desc">đường đen, trân châu</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-cacao">
+          <div class="dk-shot"><img src="media/menu/cacao-nong.png" alt="Cacao" width="315" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Cacao</div>
+          <div class="dk-desc">cacao nguyên chất</div>
+          <div class="dk-price">45k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-gung-mat-ong">
+          <div class="dk-shot"><img src="media/menu/tra-gung-mat-ong.png" alt="Trà gừng mật ong" width="395" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà gừng mật ong</div>
+          <div class="dk-desc">gừng tươi, mật ong</div>
+          <div class="dk-price">35k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-tra-hoa-cuc-tao-do">
+          <div class="dk-shot"><img src="media/menu/tra-hoa-cuc-tao-do.png" alt="Trà hoa cúc táo đỏ" width="395" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Trà hoa cúc táo đỏ</div>
+          <div class="dk-desc">hoa cúc, táo đỏ, kỷ tử</div>
+          <div class="dk-price">40k</div>
+        </li>
+      </ul>
+    </div>
+    <div class="dk-panel" role="tabpanel" id="dk-panel-an-nhe" aria-labelledby="dk-tab-an-nhe" hidden>
+      <ul class="dk-grid">
+        <li class="dk-item" data-od-id="drink-huong-duong">
+          <div class="dk-shot"><img src="media/menu/huong-duong.png" alt="Hướng dương" width="409" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Hướng dương</div>
+          <div class="dk-price">15k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-kho-bo-kho-ga">
+          <div class="dk-shot"><img src="media/menu/kho-bo.png" alt="Khô bò · khô gà" width="280" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Khô bò · khô gà</div>
+          <div class="dk-price">20k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-bim-bim">
+          <div class="dk-shot"><img src="media/menu/bim-bim.png" alt="Bim bim" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Bim bim</div>
+          <div class="dk-price">10k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-banh-chuoi">
+          <div class="dk-shot"><img src="media/menu/banh-chuoi.png" alt="Bánh chuối" width="415" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Bánh chuối</div>
+          <div class="dk-price">40k</div>
+        </li>
+        <li class="dk-item" data-od-id="drink-croissant">
+          <div class="dk-shot"><img src="media/menu/croissant.png" alt="Croissant" width="420" height="420" loading="lazy" decoding="async"></div>
+          <div class="dk-name">Croissant</div>
+          <div class="dk-price">35k</div>
+        </li>
+      </ul>
+    </div>
+    <p class="dk-foot">Giá tính theo nghìn đồng · đá hay nóng cùng giá · mở cửa 7:00 — 22:00</p>
+  </div>
+
+  <div class="floor"></div>
+</section>
+<!-- DRINKS:END -->
+
+<section class="gallery cube" id="story" data-od-id="section-moments">
+  <div class="room-head">
+    <div class="left rv">
+      <div class="no">Gian III.</div>
       <h2>Khoảnh khắc<br><span class="serif-i">lên đèn</span></h2>
     </div>
     <div class="note rv d1">Theo dõi Nâng trên<br>@naang.cafe</div>
@@ -1068,7 +1459,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <section class="gallery letter" id="craft" data-od-id="section-story">
   <div class="room-head">
     <div class="left rv">
-      <div class="no">Gian III.</div>
+      <div class="no">Gian IV.</div>
       <h2>Lắng nghe<br><span class="serif-i">câu chuyện</span></h2>
     </div>
     <div class="note rv d1">Lá thư từ người<br>sáng lập Nâng</div>
@@ -1103,7 +1494,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
 <section class="gallery cube" id="locations" data-od-id="section-location">
   <div class="room-head">
     <div class="left rv">
-      <div class="no">Gian IV.</div>
+      <div class="no">Gian V.</div>
       <h2>Ghi dấu<br><span class="serif-i">địa điểm</span></h2>
     </div>
     <div class="note rv d1">Cao Bằng —<br>phường Sông Hiến</div>
@@ -1169,9 +1560,10 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       <h4>Tham quan</h4>
       <ul>
         <li><a href="#space">Gian I · Không gian</a></li>
-        <li><a href="#story">Gian II · Khoảnh khắc</a></li>
-        <li><a href="#craft">Gian III · Câu chuyện</a></li>
-        <li><a href="#locations">Gian IV · Địa điểm</a></li>
+        <li><a href="#drinks">Gian II · Đồ uống</a></li>
+        <li><a href="#story">Gian III · Khoảnh khắc</a></li>
+        <li><a href="#craft">Gian IV · Câu chuyện</a></li>
+        <li><a href="#locations">Gian V · Địa điểm</a></li>
       </ul>
     </div>
     <div>
@@ -1470,13 +1862,22 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
   // ---- Door gate (GATE_PEEK_V2): tap -> doors part, the homepage shows through the gap -> walk in ----
   (function gate(){
     const v = document.getElementById('gateVideo');
-    const OPEN_AT = 3.0, CUT_AT = 4.85, RATE = 1.6;   // only the door-opening part of the clip, played fast
+    const OPEN_AT = 3.0, CUT_AT = 4.85, RATE = 0.85;   // only the door-opening part of the clip, played fast
     // how wide the gap between the two leaves is (0..1 of the doorway) at a given clip time, measured from the clip
     const GAP = [[3.0,0],[3.3,0.03],[3.6,0.12],[4.0,0.34],[4.3,0.52],[4.6,0.7],[4.85,0.82]];
     const gapAt = t => { if (t <= GAP[0][0]) return 0; for (let i = 1; i < GAP.length; i++){ const a = GAP[i-1], b = GAP[i]; if (t <= b[0]) return a[1] + (b[1]-a[1]) * (t-a[0]) / (b[0]-a[0]); } return GAP[GAP.length-1][1]; };
     const SEAM = 52.5, LW = 16.8, RW = 17.5, TOP = 32.6, BOT = 70.5;   // doorway in % of the video frame
     const hole = f => { const L = (SEAM - LW*f).toFixed(2) + '%', R = (SEAM + RW*f).toFixed(2) + '%';
       v.style.clipPath = 'polygon(evenodd,0 0,100% 0,100% 100%,0 100%,0 0,' + L + ' ' + TOP + '%,' + R + ' ' + TOP + '%,' + R + ' ' + BOT + '%,' + L + ' ' + BOT + '%,' + L + ' ' + TOP + '%)'; };
+    // sparkles scattered along the door edges (and the seam), each on its own twinkle rhythm
+    const sp = document.getElementById('gateSparks');
+    if (sp && !prefersReduced){
+      const W = 34.3, H = 37.9, P = 2 * (W + H), pts = [];
+      for (let i = 0; i < 22; i++){ let d = (i + 0.5 + (Math.random() - 0.5) * 0.6) * P / 22;
+        if (d < W) pts.push([d / W, 0]); else if ((d -= W) < H) pts.push([1, d / H]); else if ((d -= H) < W) pts.push([1 - d / W, 1]); else pts.push([0, 1 - (d - W) / H]); }
+      for (let i = 0; i < 5; i++) pts.push([(SEAM - 35.7) / W, 0.1 + 0.8 * (i + Math.random() * 0.6) / 5]);
+      sp.innerHTML = pts.map(([x, y]) => '<i class="spark" style="left:' + (x*100).toFixed(1) + '%;top:' + (y*100).toFixed(1) + '%;--s:' + (16 + Math.random()*16).toFixed(0) + 'px;--d:' + (1.4 + Math.random()*1.8).toFixed(2) + 's;--dl:-' + (Math.random()*3).toFixed(2) + 's"></i>').join('');
+    }
     let started = false, finished = false, raf = 0;
     const unlock = () => document.documentElement.classList.remove('locked');
     const finish = (instant) => {
@@ -1487,7 +1888,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       try { v.pause(); } catch(e){}
       pre.classList.add('walk-in');
       requestAnimationFrame(() => pre.classList.add('done'));
-      setTimeout(unlock, 700);
+      setTimeout(unlock, 1100);
     };
     const track = () => {
       hole(gapAt(v.currentTime));
@@ -1501,7 +1902,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       document.body.classList.add('started');           // ...and starts lighting up while the doors part
       countEl.textContent = 'Đang mở cửa';
       if (prefersReduced || !v || !v.canPlayType('video/mp4')) return finish();
-      const fallback = setTimeout(finish, 6000);       // never trap the visitor
+      const fallback = setTimeout(finish, 8000);       // never trap the visitor
       const go = () => { v.playbackRate = RATE; v.play().then(() => { raf = requestAnimationFrame(track); }).catch(() => { clearTimeout(fallback); finish(); }); };
       v.addEventListener('error', () => { clearTimeout(fallback); finish(); }, { once:true });
       if (v.readyState >= 1){ v.currentTime = OPEN_AT; go(); }
@@ -1873,6 +2274,25 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offse
       scrollToSection(hash);
     });
   });
+
+  // Gian II: menu tabs (click + arrow keys)
+  (function drinkTabs(){
+    const tabs = [...document.querySelectorAll('.dk-tab')];
+    const pick = (t, focus) => {
+      tabs.forEach(x => { const on = x === t; x.setAttribute('aria-selected', on); x.tabIndex = on ? 0 : -1;
+        document.getElementById(x.getAttribute('aria-controls')).hidden = !on; });
+      if (focus) t.focus();
+    };
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => pick(t));
+      t.addEventListener('keydown', e => {
+        const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (k){ e.preventDefault(); pick(tabs[(i + k + tabs.length) % tabs.length], true); }
+        else if (e.key === 'Home'){ e.preventDefault(); pick(tabs[0], true); }
+        else if (e.key === 'End'){ e.preventDefault(); pick(tabs[tabs.length - 1], true); }
+      });
+    });
+  })();
 
   // Gian I: hover a material / zone -> crossfade the matching photo in the framed stage
   const stageFrame = document.getElementById('stageFrame');
